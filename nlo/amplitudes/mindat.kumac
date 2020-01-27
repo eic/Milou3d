@@ -1,6 +1,0 @@
- macro mindat
-   for/file 66 minuit.dat
-   nt/loop //lun21/1 mindat.f(66)
-   for/close 66
- return
- 
