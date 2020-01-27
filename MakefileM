@@ -15,7 +15,7 @@ SRC = \
 
 CERN_LIBS = /cern/pro/lib
 
-BASES = libbases.a
+BASES = -L bases51 -lbases
 
 LOADER = $(F_COMP)
 
@@ -48,5 +48,5 @@ objects: $(SRC:.f=.o)
 .PHONY: clean
 
 clean:
-	rm *.o milou libbases.a bases51/*.o
+	rm *.o milou libbases.a
 
