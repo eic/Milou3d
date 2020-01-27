@@ -1,0 +1,45 @@
+
+*#**********************************************************************
+*#                                                                     *
+*#    %MACRO CPROD                                                     *
+*#                                                                     *
+*#**********************************************************************
+*
+*     Data of PRODuced particles, to be transferred to the GTR bank
+*
+*     NPART:   Number of generated particles stored in /CPROD/
+*     PPART:   5-vectors (momentum, energy, and mass) of generated
+*              particles (all units are GeV, GeV/c, or GeV/c^2)
+*     PPART8:  Copy of PPART in double prcision
+*     PPCMS8:  5-vectors of particles in the gamma-p CMS in double prec.
+*     ITYPE:   PDG codes of generated particles: see the
+*              1992 Review of Particle Properties,
+*                Phys. Rev. D45, No. 11, Pt. II, p. III.72,
+*              and/or the PYTHIA 5.7 manual, CERN-TH.7112/93.
+*     MOHEP:   Mother(s) of a particle; 0 for beam particles
+*     IDAHEP:  First and last daughter of a particle; 0 for undec.parts.
+*              If a particle has more than 2 daughters, only the
+*              first two are given.
+*     ISTAT:   Status of a particle:
+*              201:     beam particle
+*                1:     "stable" (i.e. not already decayed)
+*                2:     decayed
+*     RAP:     Rapidity of generated particles
+*     PSRAP:   Pseudorapidity of generated particles
+*     THETAP:  Azimuth angle of generated particles
+*
+
+      PARAMETER (NPARTMAX = 500)
+      COMMON /CPROD/ PPART8, PPCMS8, NPART, PPART,
+     +               ITYPE, MOHEP, IDAHEP, ISTAT,
+     +               HASDECAYED,
+     +               RAP, PSRAP, THETAP
+
+      INTEGER NPART, ITYPE (NPARTMAX), MOHEP (2, NPARTMAX),
+     +        IDAHEP (2, NPARTMAX), ISTAT (NPARTMAX)
+      integer HASDECAYED(NPARTMAX)
+
+      REAL PPART (5, NPARTMAX),
+     +     RAP (NPARTMAX), PSRAP (NPARTMAX), THETAP (NPARTMAX)
+      REAL*8 PPART8 (5, NPARTMAX), PPCMS8 (5, NPARTMAX)
+

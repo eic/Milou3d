@@ -1,0 +1,46 @@
+      integer stEXP
+      integer stASYM
+      integer stISEED
+      integer stIELAS
+      integer stIRFRA
+      integer stIGEN,stNGEN,stNCALL,stITMX1,stITMX2,stIDEBUG
+      integer stNPRINT
+      integer stNX,stNQ,stIPRO,stIORD,stNSET,stITFORM
+      integer stIRAD
+      real stELEP,stETARG,stLCHAR,stLPOL,stTPOL,stZTAR,stATAR
+      real stSPIN
+      real stXMIN,stXMAX,stQMIN,stQMAX,stTMIN,stTMAX
+      real stBQ,stBQ_SLOPE,stBG,stBG_SLOPE,stQ02,stX0
+      real stTHLMIN,stTHLMAX,stELMIN,stTHGMIN,stTHGMAX,stEGMIN,stEIMIN
+      real stSIGN,stRTIN,stBTIN
+      real stPHI,stPPHI,stTHETA
+      real stYMAX,stM12MIN,stELMB,stEGMB
+      real stYMIN   ! s.fazio October 2010 
+      real stPROSPLIT
+      real stEPSM,stMYMIN,stMYMAX
+      logical stTWIST3,stFIXED,stTINTIN,stF2QCD,stDIPOLE
+
+      COMMON/STEERING/stEXP,stASYM,
+     +                stISEED,stELEP,stETARG,stLCHAR,stLPOL,stTPOL,
+     +                stIELAS,stIRFRA,
+     +                stZTAR,stATAR,stSPIN,
+     +                stXMIN,stXMAX,stQMIN,stQMAX,stTMIN,stTMAX,
+     +                stBQ,stBQ_SLOPE,stBG,stBG_SLOPE,stQ02,stX0,
+     +                stSIGN,stRTIN,stBTIN,
+     +                stTHLMIN,stTHLMAX,stELMIN,stTHGMIN,
+     +                stTHGMAX,stEGMIN,stEIMIN,
+     +                stPHI,stPPHI,stTHETA,
+     +                stIGEN,stNGEN,stNPRINT,stIRAD,
+     +                stNCALL,stITMX1,stITMX2,stIDEBUG,
+     +                stNX,stNQ,stIPRO,stIORD,stNSET,stITFORM,
+     +                stTWIST3,stFIXED,stTINTIN,stF2QCD,stDIPOLE,
+     +                stYMIN,stYMAX,stM12MIN,stELMB,stEGMB,
+     +                stPROSPLIT,
+     +                stEPSM,stMYMIN,stMYMAX
+
+
+
+
+
+
+

@@ -1,0 +1,197 @@
+LIST
+C
+C generation in exp(var)
+C
+EXP    1
+C
+C --- Generator SEED
+SEED  2345672
+C
+C -------------------------------------------------------------
+C
+C --- Fixed target or collider
+C
+FIXED  FALSE
+C
+C --- Beam Energies
+C     In collider mode, enter the beam momentum
+C     In fixed target mode, ETARG = mass of target
+C
+ELEP   -4.0
+ETARG   100.0
+C
+C --- Lepton charge
+C
+LCHAR  -1.
+C
+C --- Polarisations
+C
+LPOL  0.
+TPOL  0.
+C
+C --- Z/A of target
+C
+ZTAR  1.
+ATAR  1.
+C
+C --- Spin (1. = 1/2)
+C
+SPIN  1.
+C
+C -- RAD
+C
+IRAD  0
+C
+C
+C --- Elastic or proton dissociation
+C     IELAS = 1  : elastic
+C     IELAS = 0  : dissociation
+C
+IELAS  1
+C 
+C --- Decays of resonances (when IELAS=0)
+C     IRFRA = 0 : use DIFFVM's routines
+C     IRFRA = 1 : decay via PYTHIA
+C
+IRFRA  1
+C
+C --- Treatment of dissociated proton in the continuum :
+C     PROSPLIT steers how the proton is splitted into q-diquark :
+C     PROSPLIT = 1 :  same probability to take q=u or q=d
+C              = 0 :  probability according to e_q^2
+C     PROSPLIT can be a real between 0 and 1
+C
+PROSPLIT  0.5
+C
+C --- MY**2 dependence (when IELAS=0)
+C
+EPSM   0.08
+C
+C
+C --- TINTIN
+C     lepton beam (sign = +1/electron, -1/positron)
+C     F2QCD = TRUE => F2=F2 (H1 QCD) / default = ALLM
+C     DIPOLE => DVCS from dipole DD prediction
+C
+TINTIN  TRUE
+BTIN    6.00
+RTIN    0.50
+F2QCD   TRUE
+DIPOLE  FALSE
+C
+C
+C --- Integration / Generation / Both
+C       IGEN = 0 :  1st run for grid calculation
+C       IGEN = 2 :  Restart integration
+C       IGEN = 4 :  Generation only (requires the file bases.data)
+C
+IGEN  0
+C 
+C --- Number of events to generate
+C
+NGEN    100000
+C---NGEN    50000
+NPRINT  10
+C
+C --- Parameters for BASES
+C
+NCALL  10000
+ITMX1  10
+ITMX2  10
+C ITMX1 3
+C ITMX2 3
+C
+C --- Debug flag
+C
+IDEBUG  0
+C
+C --- Number of x & q2 points in the amplitudes grid 
+C
+NXGRID 58
+NQGRID 40
+C
+C --- Process to generate
+C ipro = 1 : BH
+C ipro = 2 : DVCS
+C ipro = 3 : INT
+C ipro = 4 : BH+DVCS+INT
+C ipro = 5 :SSA without TW3
+C
+IPRO 4
+C
+C
+C --- ORDER : LO or NLO
+C       IORD = 1 : LO
+C       IORD = 2 : NLO
+C
+IORD  1
+C
+C --- Kinematic domain
+C      TMIN and TMAX are in GeV^2, negative
+C     |TMIN|  = |t|_min  
+C     |TMAX|  = |t|_max 
+C
+XMIN    1.0e-4
+XMAX    1.0e-1
+QMIN    5.
+QMAX  100.0
+TMIN    0.0
+TMAX   -2.
+C
+C --- Bounds on MY**2 when dissociated proton
+C
+MYMIN  1.13
+MYMAX  30. 
+C
+C --- Integration over angles
+C      NSET = 1 : don't integrate over angles
+C      NSET = 2 : integrate over angles
+C
+NSET   2
+PHI    0.
+PPHI   0.
+THETA  0.
+C
+C
+C --- With or without Twist 3
+C
+TWIST3  FALSE
+C
+C --- Parameters for t-dependence (see code)
+C
+ITFORM   0
+BQCST    6.0
+BQSLOPE  0.0
+BGCST    6.0
+BGSLOPE  0.0
+Q0SQ     2.0
+X0DEF    0.1e0
+C
+C
+C --- KINEMATIC CUTS
+C     minimal lepton angle,...,minimal ISR photon energy
+C     EGMIN is unused and ELMIN=Eg+El minimal energy (v3)
+C
+**THLMIN  160.0
+THLMIN    5.0
+THLMAX  180.0
+ELMIN    10.0
+THGMIN    5.0
+**THGMAX  160.0
+THGMAX  180.0
+EIMIN     0.000001
+C
+C
+YMAX   0.9
+M12MIN 0.
+ELMB   0.
+EGMB   0.
+C
+C -------------------------------------------------------------
+C
+C
+END
+STOP
+EXIT
+
+

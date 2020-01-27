@@ -1,0 +1,33 @@
+
+      real*4     xntp,qntp,yntp,phintp,tntp,
+* -> In Lab frame :
+     +         plilab(4),plolab(4),ppilab(4),ppolab(4),
+     +         pvglab(4),prglab(4),
+     +         pvisr(4),
+* -> In p rest frame :
+     +         pliprf(4),ploprf(4),ppiprf(4),ppoprf(4),
+     +         pvgprf(4),prgprf(4),
+* -> In Belitsky frame :
+     +         plibel(4),plobel(4),ppibel(4),ppobel(4),
+     +         pvgbel(4),prgbel(4)
+
+      real*4 wbhntp,wdvcsntp,wintntp,wtotntp
+
+      real*4 ym,phibel,resol,phibelrec,phibelgen
+
+      common/dvcsvar1/ xntp,qntp,yntp,phintp,tntp,
+     +         plilab,plolab,ppilab,ppolab,
+     +         pvglab,prglab,
+     +         pvisr,
+     +         pliprf,ploprf,ppiprf,ppoprf,
+     +         pvgprf,prgprf,
+     +         plibel,plobel,ppibel,ppobel,
+     +         pvgbel,prgbel,
+     +         wbhntp,wdvcsntp,wintntp,wtotntp,
+     +         ym,phibel,resol,phibelrec,phibelgen
+
+
+
+
+
+

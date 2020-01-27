@@ -1,0 +1,32 @@
+*** Begin of history file: Wed Jun  6 22:05:58 2001
+exec crossintplot
+exec crossintplot
+hi/pl 301
+hi/pl 105
+opt logy
+hi/pl 105
+opt liny
+hi/pl 105
+v/pri vect_q2_ep
+exec crossintplot
+v/pri vect_q2_ep
+exec crossintplot
+v/pri vect_q2_ep
+exec crossintplot
+v/pri vect_q2_ep
+exec crossintplot
+v/pri vect_q2_ep
+exec crossintplot
+v/pri vect_q2_ep
+exec crossintplot
+exec crossintplot
+v/pri vect_q2_ep
+exec crossintplot
+v/pri vect_q2_ep
+exec crossintplot
+v/pri vect_q2_ep
+exec crossintplot
+exec crossintplot
+exec crossintplot
+q
+*** End   of history file: Thu Jun  7 10:55:58 2001

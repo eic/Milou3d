@@ -1,0 +1,470 @@
+
+                                                     Date: 2010/ 4/21  10:15
+        **********************************************************
+        *                                                        *
+        *     BBBBBBB     AAAA     SSSSSS   EEEEEE   SSSSSS      *
+        *     BB    BB   AA  AA   SS    SS  EE      SS    SS     *
+        *     BB    BB  AA    AA  SS        EE      SS           *
+        *     BBBBBBB   AAAAAAAA   SSSSSS   EEEEEE   SSSSSS      *
+        *     BB    BB  AA    AA        SS  EE            SS     *
+        *     BB    BB  AA    AA  SS    SS  EE      SS    SS     *
+        *     BBBB BB   AA    AA   SSSSSS   EEEEEE   SSSSSS      *
+        *                                                        *
+        *                   BASES Version 5.1                    *
+        *           coded by S.Kawabata KEK, March 1994          *
+        **********************************************************
+
+
+     <<   Parameters for BASES    >>
+
+      (1) Dimensions of integration etc.
+          # of dimensions :    Ndim    =        3   ( 50 at max.)
+          # of Wilds      :    Nwild   =        3   ( 15 at max.)
+          # of sample points : Ncall   =     9826(real)    10000(given)
+          # of subregions    : Ng      =       34 / variable
+          # of regions       : Nregion =       17 / variable
+          # of Hypercubes    : Ncube   =     4913
+
+      (2) About the integration variables
+          ------+---------------+---------------+-------+-------
+              i       XL(i)           XU(i)       IG(i)   Wild
+          ------+---------------+---------------+-------+-------
+              1   -6.907755E+00   -6.931472E-01     1      yes
+              2    6.931472E-01    3.688879E+00     1      yes
+              3   -1.500000E+00    0.000000E+00     1      yes
+          ------+---------------+---------------+-------+-------
+
+      (3) Parameters for the grid optimization step
+          Max.# of iterations: ITMX1 =       10
+          Expected accuracy  : Acc1  =   0.0500 %
+
+      (4) Parameters for the integration step
+          Max.# of iterations: ITMX2 =       10
+          Expected accuracy  : Acc2  =   0.0100 %
+
+
+     <<   Computing Time Information   >>
+
+               (1) For BASES              H: M:  Sec
+                   Overhead           :   0: 0: 0.00
+                   Grid Optim. Step   :   0: 5:54.32
+                   Integration Step   :   0: 6: 9.16
+                   Go time for all    :   0:12: 3.48
+
+               (2) Expected event generation time
+                   Expected time for 1000 events :      5.37 Sec
+
+                                                     Date: 2010/ 4/21  10:15
+               Convergency Behavior for the Grid Optimization Step
+ ------------------------------------------------------------------------------
+ <- Result of  each iteration ->  <-     Cumulative Result     -> < CPU  time >
+  IT Eff R_Neg   Estimate  Acc %  Estimate(+- Error )order  Acc % ( H: M: Sec )
+ ------------------------------------------------------------------------------
+   1  32  0.00  1.506E-02  3.096  1.505594(+-0.046608)E-02  3.096   0: 0:18.10
+   2  68  0.00  1.475E-02  0.594  1.476304(+-0.008612)E-02  0.583   0: 0:55.44
+   3  68  0.00  1.481E-02  0.663  1.478141(+-0.006472)E-02  0.438   0: 1:33.06
+   4  67  0.00  1.460E-02  0.556  1.471064(+-0.005059)E-02  0.344   0: 2: 9.85
+   5  68  0.00  1.482E-02  0.629  1.473624(+-0.004446)E-02  0.302   0: 2:47.69
+   6  67  0.00  1.479E-02  0.568  1.474749(+-0.003930)E-02  0.266   0: 3:25.07
+   7  68  0.00  1.462E-02  0.568  1.472445(+-0.003552)E-02  0.241   0: 4: 2.83
+   8  68  0.00  1.480E-02  0.598  1.473483(+-0.003296)E-02  0.224   0: 4:40.45
+   9  67  0.00  1.469E-02  0.598  1.472951(+-0.003086)E-02  0.210   0: 5:17.29
+  10  67  0.00  1.477E-02  0.607  1.473429(+-0.002918)E-02  0.198   0: 5:54.32
+ ------------------------------------------------------------------------------
+
+                                                     Date: 2010/ 4/21  10:15
+               Convergency Behavior for the Integration Step      
+ ------------------------------------------------------------------------------
+ <- Result of  each iteration ->  <-     Cumulative Result     -> < CPU  time >
+  IT Eff R_Neg   Estimate  Acc %  Estimate(+- Error )order  Acc % ( H: M: Sec )
+ ------------------------------------------------------------------------------
+   1  67  0.00  1.477E-02  0.593  1.476971(+-0.008756)E-02  0.593   0: 6:31.42
+   2  67  0.00  1.467E-02  0.613  1.471981(+-0.006275)E-02  0.426   0: 7: 8.07
+   3  67  0.00  1.490E-02  0.589  1.478162(+-0.005103)E-02  0.345   0: 7:45.20
+   4  67  0.00  1.459E-02  0.584  1.473205(+-0.004378)E-02  0.297   0: 8:21.89
+   5  67  0.00  1.472E-02  0.619  1.472891(+-0.003946)E-02  0.268   0: 8:58.83
+   6  67  0.00  1.481E-02  0.606  1.474128(+-0.003612)E-02  0.245   0: 9:35.83
+   7  67  0.00  1.466E-02  0.599  1.472933(+-0.003340)E-02  0.227   0:10:12.75
+   8  67  0.00  1.480E-02  0.633  1.473723(+-0.003146)E-02  0.213   0:10:49.65
+   9  67  0.00  1.470E-02  0.572  1.473290(+-0.002947)E-02  0.200   0:11:26.58
+  10  67  0.00  1.476E-02  0.626  1.473526(+-0.002808)E-02  0.191   0:12: 3.48
+ ------------------------------------------------------------------------------
+
+
+
+     *********  Contents of the histogram Header *********
+
+ (1) Actual Buffer size     =    843 Words
+ (2) Contents of Histograms 
+     Max. No. of Histograms =     50
+     Number   of Histograms =      3
+    ID     X_min        X_max    X_bin Hash Hst#
+     1  -6.9078E+00  -6.9315E-01   40  2  1    1
+     2   6.9315E-01   3.6889E+00   40  3  1    2
+     3  -1.5000E+00   0.0000E+00   40  4  1    3
+ (3) Contents of Scatter Plots
+     Max. No. of Scat_Plots =     50
+     Number   of Scat_Plots =      0
+
+ Histogram (ID =  1 ) for x                                                               
+                              Linear Scale indicated by "*"
+     x      d(Sigma)/dx     0.0E+00      4.5E-03      9.0E-03     1.3E-02      
+ +-------+------------------+------------+------------+-----------+-----------+
+ I  E  0 I 0.000        E  0I                                                 I
+ I-6.908 I 0.000+-0.000 E  0I                                                 I
+ I-6.752 I 0.000+-0.000 E  0I                                                 I
+ I-6.597 I 0.000+-0.000 E  0I                                                 I
+ I-6.442 I 0.000+-0.000 E  0I                                                 I
+ I-6.286 I 0.000+-0.000 E  0I                                                 I
+ I-6.131 I 0.000+-0.000 E  0I                                                 I
+ I-5.976 I 0.000+-0.000 E  0I                                                 I
+ I-5.820 I 0.000+-0.000 E  0I                                                 I
+ I-5.665 I 0.000+-0.000 E  0I                                                 I
+ I-5.509 I 0.000+-0.000 E  0I                                                 I
+ I-5.354 I 0.000+-0.000 E  0I                                                 I
+ I-5.199 I 0.000+-0.000 E  0I                                                 I
+ I-5.043 I 0.000+-0.000 E  0I                                                 I
+ I-4.888 I 0.000+-0.000 E  0I                                                 I
+ I-4.733 I 0.000+-0.000 E  0I                                                 I
+ I-4.577 I 0.000+-0.000 E  0I                                                 I
+ I-4.422 I 0.000+-0.000 E  0I                                                 I
+ I-4.267 I 0.000+-0.000 E  0I                                                 I
+ I-4.111 I 0.000+-0.000 E  0I                                                 I
+ I-3.956 I 0.000+-0.000 E  0I                                                 I
+ I-3.800 I 0.000+-0.000 E  0I                                                 I
+ I-3.645 I 0.000+-0.000 E  0I                                                 I
+ I-3.490 I 0.000+-0.000 E  0I                                                 I
+ I-3.334 I 0.000+-0.000 E  0I                                                 I
+ I-3.179 I 0.000+-0.000 E  0I                                                 I
+ I-3.024 I 0.000+-0.000 E  0I                                                 I
+ I-2.868 I 0.000+-0.000 E  0I                                                 I
+ I-2.713 I 0.000+-0.000 E  0I                                                 I
+ I-2.558 I 0.000+-0.000 E  0I                                                 I
+ I-2.402 I 0.000+-0.000 E  0I                                                 I
+ I-2.247 I 0.000+-0.000 E  0I                                                 I
+ I-2.091 I 0.000+-0.000 E  0I                                                 I
+ I-1.936 I 0.000+-0.000 E  0I                                                 I
+ I-1.781 I 0.000+-0.000 E  0I                                                 I
+ I-1.625 I 0.000+-0.000 E  0I                                                 I
+ I-1.470 I 0.000+-0.000 E  0I                                                 I
+ I-1.315 I 0.000+-0.000 E  0I                                                 I
+ I-1.159 I 0.000+-0.000 E  0I                                                 I
+ I-1.004 I 0.000+-0.000 E  0I                                                 I
+ I-0.849 I 0.000+-0.000 E  0I                                                 I
+ I  E  0 I 1.474        E -2I*****************************************OOOOOO  I
+ +-------+------------------+-------------------------------------------------+
+     x      d(Sigma)/dx     1.0E-02                                    1.5E-02 
+                              Logarithmic Scale indicated by "O"
+
+ Histogram (ID =  2 ) for q                                                               
+                              Linear Scale indicated by "*"
+     x      d(Sigma)/dx     0.0E+00      2.7E-03      5.5E-03     8.2E-03      
+ +-------+------------------+------------+------------+-----------+-----------+
+ I  E  0 I 0.000        E  0I                                                 I
+ I 0.693 I 0.000+-0.000 E  0I                                                 I
+ I 0.768 I 0.000+-0.000 E  0I                                                 I
+ I 0.843 I 0.000+-0.000 E  0I                                                 I
+ I 0.918 I 0.000+-0.000 E  0I                                                 I
+ I 0.993 I 0.000+-0.000 E  0I                                                 I
+ I 1.068 I 0.000+-0.000 E  0I                                                 I
+ I 1.143 I 0.000+-0.000 E  0I                                                 I
+ I 1.217 I 0.000+-0.000 E  0I                                                 I
+ I 1.292 I 0.000+-0.000 E  0I                                                 I
+ I 1.367 I 0.000+-0.000 E  0I                                                 I
+ I 1.442 I 0.000+-0.000 E  0I                                                 I
+ I 1.517 I 0.000+-0.000 E  0I                                                 I
+ I 1.592 I 0.000+-0.000 E  0I                                                 I
+ I 1.667 I 0.000+-0.000 E  0I                                                 I
+ I 1.742 I 0.000+-0.000 E  0I                                                 I
+ I 1.817 I 0.000+-0.000 E  0I                                                 I
+ I 1.891 I 0.000+-0.000 E  0I                                                 I
+ I 1.966 I 5.284+-0.061 E -3I*************************OOOOOOOOOOOO            I
+ I 2.041 I 8.906+-0.076 E -3I*****************************************OOOOOOO I
+ I 2.116 I 8.336+-0.078 E -3I**************************************OOOOOOOOO  I
+ I 2.191 I 7.703+-0.069 E -3I************************************OOOOOOOOO    I
+ I 2.266 I 7.143+-0.070 E -3I*********************************OOOOOOOOOO      I
+ I 2.341 I 6.779+-0.063 E -3I*******************************OOOOOOOOOOO       I
+ I 2.416 I 6.515+-0.072 E -3I******************************OOOOOOOOOOO        I
+ I 2.491 I 5.969+-0.053 E -3I****************************OOOOOOOOOOO          I
+ I 2.565 I 5.517+-0.042 E -3I**************************OOOOOOOOOOOO           I
+ I 2.640 I 5.177+-0.059 E -3I************************OOOOOOOOOOOO             I
+ I 2.715 I 4.989+-0.068 E -3I***********************OOOOOOOOOOOO              I
+ I 2.790 I 4.752+-0.052 E -3I**********************OOOOOOOOOOOO               I
+ I 2.865 I 4.452+-0.048 E -3I*********************OOOOOOOOOOOO                I
+ I 2.940 I 4.136+-0.043 E -3I*******************OOOOOOOOOOOO                  I
+ I 3.015 I 3.912+-0.037 E -3I******************OOOOOOOOOOOO                   I
+ I 3.090 I 3.770+-0.043 E -3I******************OOOOOOOOOOO                    I
+ I 3.165 I 3.724+-0.039 E -3I*****************OOOOOOOOOOOO                    I
+ I 3.240 I 3.339+-0.040 E -3I****************OOOOOOOOOOO                      I
+ I 3.314 I 2.886+-0.030 E -3I**************OOOOOOOOOO                         I
+ I 3.389 I 3.102+-0.041 E -3I***************OOOOOOOOOO                        I
+ I 3.464 I 2.927+-0.032 E -3I**************OOOOOOOOOO                         I
+ I 3.539 I 2.754+-0.038 E -3I*************OOOOOOOOO                           I
+ I 3.614 I 2.515+-0.028 E -3I************OOOOOOOOO                            I
+ I  E  0 I 6.156        E -3I****************************OOOOOOOOOOOO         I
+ +-------+------------------+-------------------------------------------------+
+     x      d(Sigma)/dx     1.0E-03                                    1.0E-02 
+                              Logarithmic Scale indicated by "O"
+
+ Histogram (ID =  3 ) for t                                                               
+                              Linear Scale indicated by "*"
+     x      d(Sigma)/dx     0.0E+00      2.0E-02      4.0E-02     6.0E-02      
+ +-------+------------------+------------+------------+-----------+-----------+
+ I  E  0 I 0.000        E  0I                                                 I
+ I-1.500 I 1.475+-0.176 E -4I*OO                                              I
+ I-1.462 I 2.242+-0.280 E -4I*OOOOO                                           I
+ I-1.425 I 2.500+-0.322 E -4I*OOOOOO                                          I
+ I-1.388 I 2.677+-0.302 E -4I*OOOOOOO                                         I
+ I-1.350 I 3.361+-0.352 E -4I*OOOOOOOO                                        I
+ I-1.313 I 2.891+-0.329 E -4I*OOOOOOO                                         I
+ I-1.275 I 3.085+-0.368 E -4I*OOOOOOOO                                        I
+ I-1.237 I 3.477+-0.392 E -4I*OOOOOOOOO                                       I
+ I-1.200 I 3.924+-0.355 E -4I*OOOOOOOOO                                       I
+ I-1.163 I 4.008+-0.421 E -4I*OOOOOOOOOO                                      I
+ I-1.125 I 4.020+-0.412 E -4I*OOOOOOOOOO                                      I
+ I-1.087 I 4.064+-0.413 E -4I*OOOOOOOOOO                                      I
+ I-1.050 I 4.819+-0.507 E -4I*OOOOOOOOOOO                                     I
+ I-1.012 I 5.369+-0.561 E -4I*OOOOOOOOOOOO                                    I
+ I-0.975 I 7.019+-0.698 E -4I*OOOOOOOOOOOOOO                                  I
+ I-0.938 I 7.499+-0.609 E -4I*OOOOOOOOOOOOOO                                  I
+ I-0.900 I 6.610+-0.657 E -4I*OOOOOOOOOOOOO                                   I
+ I-0.862 I 1.168+-0.091 E -3I*OOOOOOOOOOOOOOOOO                               I
+ I-0.825 I 1.101+-0.073 E -3I*OOOOOOOOOOOOOOOOO                               I
+ I-0.787 I 1.315+-0.049 E -3I*OOOOOOOOOOOOOOOOOO                              I
+ I-0.750 I 1.721+-0.070 E -3I**OOOOOOOOOOOOOOOOOOO                            I
+ I-0.712 I 1.672+-0.062 E -3I**OOOOOOOOOOOOOOOOOOO                            I
+ I-0.675 I 2.229+-0.080 E -3I**OOOOOOOOOOOOOOOOOOOOO                          I
+ I-0.637 I 2.653+-0.095 E -3I**OOOOOOOOOOOOOOOOOOOOOO                         I
+ I-0.600 I 3.254+-0.079 E -3I***OOOOOOOOOOOOOOOOOOOOOOO                       I
+ I-0.562 I 4.088+-0.088 E -3I***OOOOOOOOOOOOOOOOOOOOOOOO                      I
+ I-0.525 I 5.065+-0.093 E -3I****OOOOOOOOOOOOOOOOOOOOOOOOO                    I
+ I-0.487 I 6.298+-0.090 E -3I****OOOOOOOOOOOOOOOOOOOOOOOOOO                   I
+ I-0.450 I 7.712+-0.093 E -3I*****OOOOOOOOOOOOOOOOOOOOOOOOOOO                 I
+ I-0.412 I 9.991+-0.135 E -3I*******OOOOOOOOOOOOOOOOOOOOOOOOOOO               I
+ I-0.375 I 1.268+-0.014 E -2I********OOOOOOOOOOOOOOOOOOOOOOOOOOOO             I
+ I-0.337 I 1.588+-0.016 E -2I**********OOOOOOOOOOOOOOOOOOOOOOOOOOO            I
+ I-0.300 I 1.855+-0.013 E -2I************OOOOOOOOOOOOOOOOOOOOOOOOOO           I
+ I-0.262 I 2.412+-0.013 E -2I****************OOOOOOOOOOOOOOOOOOOOOOOO         I
+ I-0.225 I 2.996+-0.012 E -2I*******************OOOOOOOOOOOOOOOOOOOOOOO       I
+ I-0.187 I 3.766+-0.015 E -2I************************OOOOOOOOOOOOOOOOOOO      I
+ I-0.150 I 4.508+-0.015 E -2I*****************************OOOOOOOOOOOOOOOO    I
+ I-0.112 I 5.356+-0.010 E -2I**********************************OOOOOOOOOOOO   I
+ I-0.075 I 5.972+-0.010 E -2I**************************************OOOOOOOOO  I
+ I-0.037 I 4.060+-0.016 E -2I**************************OOOOOOOOOOOOOOOOOO     I
+ I  E  0 I 0.000        E  0I                                                 I
+ +-------+------------------+----------------+----------------+---------------+
+     x      d(Sigma)/dx     1.0E-04          1.0E-03          1.0E-02          
+                              Logarithmic Scale indicated by "O"
+ *************************************
+ *     INTEGRATION TERMINATED        *
+ *************************************
+ Total cross-section (nb) :   1.47352638E-02
+ Error                    :   2.80751647E-05
+
+
+
+
+
+                                                     Date: 2010/ 4/21  10:27
+        **********************************************************
+        *                                                        *
+        *    SSSSS   PPPPPP   RRRRRR   IIIII  N    NN   GGGGG    *
+        *   SS   SS  PP   PP  RR   RR   III   NN   NN  GG   GG   *
+        *   SS       PP   PP  RR   RR   III   NNN  NN  GG        *
+        *    SSSSS   PPPPPP   RRRRR     III   NNNN NN  GG  GGGG  *
+        *        SS  PP       RR  RR    III   NN NNNN  GG   GG   *
+        *   SS   SS  PP       RR   RR   III   NN  NNN  GG   GG   *
+        *    SSSSS   PP       RR    RR IIIII  NN   NN   GGGGG    *
+        *                                                        *
+        *                  SPRING Version 5.1                    *
+        *           coded by S.Kawabata KEK, March 1994          *
+        **********************************************************
+
+     Number of generated events    =        11
+     Generation efficiency         =    91.667 Percent
+     Computing time for generation =     0.060 Seconds
+                    for Overhead   =   723.500 Seconds
+                    for Others     =     0.020 Seconds
+     GO time for event generation  =   723.580 Seconds
+     Max. number of trials MXTRY   =        50 per event
+     Number of miss-generation     =         0 times
+
+     ************* Number of trials to get an event *************
+ Total =        11 events   "*" : No. of events in Linear scale.
+    x      Lg(dN/dx)  dN/dx 0.0E+00      3.0E+00      6.0E+00     9.0E+00      
+ +-------+----------+-------+------------+------------+-----------+-----------+
+ I 0.100 I 1.000E  1I     10I******************************************OOOO   I
+ I 0.200 I 1.000E  0I      1IO****                                            I
+ I 0.300 I 0.000E  0I      0I                                                 I
+ I 0.400 I 0.000E  0I      0I                                                 I
+ I 0.500 I 0.000E  0I      0I                                                 I
+ I 0.600 I 0.000E  0I      0I                                                 I
+ I 0.700 I 0.000E  0I      0I                                                 I
+ I 0.800 I 0.000E  0I      0I                                                 I
+ I 0.900 I 0.000E  0I      0I                                                 I
+ I 1.000 I 0.000E  0I      0I                                                 I
+ I 1.100 I 0.000E  0I      0I                                                 I
+ I 1.200 I 0.000E  0I      0I                                                 I
+ I 1.300 I 0.000E  0I      0I                                                 I
+ I 1.400 I 0.000E  0I      0I                                                 I
+ I 1.500 I 0.000E  0I      0I                                                 I
+ I 1.600 I 0.000E  0I      0I                                                 I
+ I 1.700 I 0.000E  0I      0I                                                 I
+ I 1.800 I 0.000E  0I      0I                                                 I
+ I 1.900 I 0.000E  0I      0I                                                 I
+ I 2.000 I 0.000E  0I      0I                                                 I
+ I 2.100 I 0.000E  0I      0I                                                 I
+ I 2.200 I 0.000E  0I      0I                                                 I
+ I 2.300 I 0.000E  0I      0I                                                 I
+ I 2.400 I 0.000E  0I      0I                                                 I
+ I 2.500 I 0.000E  0I      0I                                                 I
+ I 2.600 I 0.000E  0I      0I                                                 I
+ I 2.700 I 0.000E  0I      0I                                                 I
+ I 2.800 I 0.000E  0I      0I                                                 I
+ I 2.900 I 0.000E  0I      0I                                                 I
+ I 3.000 I 0.000E  0I      0I                                                 I
+ I 3.100 I 0.000E  0I      0I                                                 I
+ I 3.200 I 0.000E  0I      0I                                                 I
+ I 3.300 I 0.000E  0I      0I                                                 I
+ I 3.400 I 0.000E  0I      0I                                                 I
+ I 3.500 I 0.000E  0I      0I                                                 I
+ I 3.600 I 0.000E  0I      0I                                                 I
+ I 3.700 I 0.000E  0I      0I                                                 I
+ I 3.800 I 0.000E  0I      0I                                                 I
+ I 3.900 I 0.000E  0I      0I                                                 I
+ I 4.000 I 0.000E  0I      0I                                                 I
+ I 4.100 I 0.000E  0I      0I                                                 I
+ I 4.200 I 0.000E  0I      0I                                                 I
+ I 4.300 I 0.000E  0I      0I                                                 I
+ I 4.400 I 0.000E  0I      0I                                                 I
+ I 4.500 I 0.000E  0I      0I                                                 I
+ I 4.600 I 0.000E  0I      0I                                                 I
+ I 4.700 I 0.000E  0I      0I                                                 I
+ I 4.800 I 0.000E  0I      0I                                                 I
+ I 4.900 I 0.000E  0I      0I                                                 I
+ I 5.000 I 0.000E  0I      0I                                                 I
+ I  E  1 I 0.000E  0I      0I                                                 I
+ +-------+----------+-------+---------------------------------------------+---+
+    x      Lg(dN/dx)  dN/dx 1.0E+00                                            
+                              "O" : No. of Events in Log. scale.
+
+
+
+     *********  Contents of the histogram Header *********
+
+ (1) Actual Buffer size     =    843 Words
+ (2) Contents of Histograms 
+     Max. No. of Histograms =     50
+     Number   of Histograms =      3
+    ID     X_min        X_max    X_bin Hash Hst#
+     1  -6.9078E+00  -6.9315E-01   40  2  1    1
+     2   6.9315E-01   3.6889E+00   40  3  1    2
+     3  -1.5000E+00   0.0000E+00   40  4  1    3
+ (3) Contents of Scatter Plots
+     Max. No. of Scat_Plots =     50
+     Number   of Scat_Plots =      0
+
+ Original Histogram (ID =  1 ) for x                                                           
+
+     ***************************************
+     *    SPRING has no entry              *
+     *     in the histogram ID(     1 )    *
+     ***************************************
+
+ Original Histogram (ID =  2 ) for q                                                           
+ Total =        11 events   "*" : Orig. Dist. in Log Scale.
+    x      d(Sig/dx)  dN/dx 1.0E-03                                    1.0E-02 
+ +-------+----------+-------+-------------------------------------------------+
+ I  E  0 I 0.000E  0I      0I                                                 I
+ I 0.693 I 0.000E  0I      0I                                                 I
+ I 0.768 I 0.000E  0I      0I                                                 I
+ I 0.843 I 0.000E  0I      0I                                                 I
+ I 0.918 I 0.000E  0I      0I                                                 I
+ I 0.993 I 0.000E  0I      0I                                                 I
+ I 1.068 I 0.000E  0I      0I                                                 I
+ I 1.143 I 0.000E  0I      0I                                                 I
+ I 1.217 I 0.000E  0I      0I                                                 I
+ I 1.292 I 0.000E  0I      0I                                                 I
+ I 1.367 I 0.000E  0I      0I                                                 I
+ I 1.442 I 0.000E  0I      0I                                                 I
+ I 1.517 I 0.000E  0I      0I                                                 I
+ I 1.592 I 0.000E  0I      0I                                                 I
+ I 1.667 I 0.000E  0I      0I                                                 I
+ I 1.742 I 0.000E  0I      0I                                                 I
+ I 1.817 I 0.000E  0I      0I                                                 I
+ I 1.891 I 0.000E  0I      0I                                                 I
+ I 1.966 I 5.284E -3I      0I*************************************            I
+ I 2.041 I 8.906E -3I      0I************************************************ I
+ I 2.116 I 8.336E -3I      0I***********************************************  I
+ I 2.191 I 7.703E -3I      0I*********************************************    I
+ I 2.266 I 7.143E -3I      0I*******************************************      I
+ I 2.341 I 6.779E -3I      0I******************************************       I
+ I 2.416 I 6.515E -3I      1I*****************************************        O
+ I 2.491 I 5.969E -3I      0I***************************************          I
+ I 2.565 I 5.517E -3I      0I**************************************           I
+ I 2.640 I 5.177E -3I      1I************************************             O
+ I 2.715 I 4.989E -3I      0I***********************************              I
+ I 2.790 I 4.752E -3I      1I**********************************               O
+ I 2.865 I 4.452E -3I      0I*********************************                I
+ I 2.940 I 4.136E -3I      0I*******************************                  I
+ I 3.015 I 3.912E -3I      1I******************************                   O
+ I 3.090 I 3.770E -3I      0I*****************************                    I
+ I 3.165 I 3.724E -3I      0I*****************************                    I
+ I 3.240 I 3.339E -3I      0I***************************                      I
+ I 3.314 I 2.886E -3I      0I************************                         I
+ I 3.389 I 3.102E -3I      0I*************************                        I
+ I 3.464 I 2.927E -3I      2I************************                         O
+ I 3.539 I 2.754E -3I      0I**********************                           I
+ I 3.614 I 2.515E -3I      0I*********************                            I
+ I  E  0 I 6.156E -3I      5I*****************************<**********  O      I
+ +-------+----------+-------+-------------------------------------------------+
+    x      d(Sig/dx)  dN/dx    "O" : Generated Events.( Arbitrary unit in Log )
+
+ Original Histogram (ID =  3 ) for t                                                           
+ Total =        11 events   "*" : Orig. Dist. in Log Scale.
+    x      d(Sig/dx)  dN/dx 1.0E-04          1.0E-03          1.0E-02          
+ +-------+----------+-------+----------------+----------------+---------------+
+ I  E  0 I 0.000E  0I      0I                                                 I
+ I-1.500 I 1.475E -4I      0I***                                              I
+ I-1.462 I 2.242E -4I      0I******                                           I
+ I-1.425 I 2.500E -4I      0I*******                                          I
+ I-1.388 I 2.677E -4I      0I********                                         I
+ I-1.350 I 3.361E -4I      0I*********                                        I
+ I-1.313 I 2.891E -4I      0I********                                         I
+ I-1.275 I 3.085E -4I      0I*********                                        I
+ I-1.237 I 3.477E -4I      0I**********                                       I
+ I-1.200 I 3.924E -4I      0I**********                                       I
+ I-1.163 I 4.008E -4I      0I***********                                      I
+ I-1.125 I 4.020E -4I      0I***********                                      I
+ I-1.087 I 4.064E -4I      0I***********                                      I
+ I-1.050 I 4.819E -4I      0I************                                     I
+ I-1.012 I 5.369E -4I      0I*************                                    I
+ I-0.975 I 7.019E -4I      0I***************                                  I
+ I-0.938 I 7.499E -4I      0I***************                                  I
+ I-0.900 I 6.610E -4I      0I**************                                   I
+ I-0.862 I 1.168E -3I      0I******************                               I
+ I-0.825 I 1.101E -3I      0I******************                               I
+ I-0.787 I 1.315E -3I      0I*******************                              I
+ I-0.750 I 1.721E -3I      0I*********************                            I
+ I-0.712 I 1.672E -3I      0I*********************                            I
+ I-0.675 I 2.229E -3I      0I***********************                          I
+ I-0.637 I 2.653E -3I      0I************************                         I
+ I-0.600 I 3.254E -3I      1I**************************                O    > I
+ I-0.562 I 4.088E -3I      0I***************************                      I
+ I-0.525 I 5.065E -3I      0I*****************************                    I
+ I-0.487 I 6.298E -3I      0I******************************                   I
+ I-0.450 I 7.712E -3I      0I********************************                 I
+ I-0.412 I 9.991E -3I      0I**********************************               I
+ I-0.375 I 1.268E -2I      0I************************************             I
+ I-0.337 I 1.588E -2I      0I*************************************            I
+ I-0.300 I 1.855E -2I      1I**************************************    O    > I
+ I-0.262 I 2.412E -2I      0I****************************************         I
+ I-0.225 I 2.996E -2I      1I******************************************O    > I
+ I-0.187 I 3.766E -2I      0I*******************************************      I
+ I-0.150 I 4.508E -2I      1I******************************************O**  > I
+ I-0.112 I 5.356E -2I      4I********************************************** < O
+ I-0.075 I 5.972E -2I      2I**************************************<********O I
+ I-0.037 I 4.060E -2I      1I******************************************O*   > I
+ I  E  0 I 0.000E  0I      0I                                                 I
+ +-------+----------+-------+----------------+----------------+---------------+
+    x      d(Sig/dx)  dN/dx    "O" : Generated Events.( Arbitrary unit in Log )
