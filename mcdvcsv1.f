@@ -1123,57 +1123,74 @@ C
 C     at the moment only H! Negelect others!
 C
 ****************************************************************
-      subroutine readin(nord,nx,nq)
+      subroutine readin(nord,nx,nq,nt)
 ****************************************************************
 
       implicit none
 
       integer nord
-      integer nx,nq,mx,mq
-      parameter(mx=100,mq=100)
-      real*8 xx(mq),qq(mq)
+      integer nx,nq,nt,mx,mq,mt
+      parameter(mx=100,mq=100,mt=100)
+      real*8 xx(mx),qq(mq),tt(mt)
       real*8 dum1,dum2
-      integer i,j
-      real*8 x,q
+      integer i,j,k
+      real*8 x,q,t
       real*8 y,tmin,testt,del,qsq,ep1,kfac,A,Z,mp,spin1
-      common /kins/ xx,qq
+      common /kins/ xx,qq,tt
       common /req/ y,tmin,testt,del,qsq,ep1,kfac,A,Z,mp,spin1
 
-      real*8 reu(mx,mq),imu(mx,mq),red(mx,mq),imd(mx,mq)
-      real*8 res(mx,mq),ims(mx,mq),reg(mx,mq),img(mx,mq)
-      real*8 reup(mx,mq),imup(mx,mq),redp(mx,mq),imdp(mx,mq)
-      real*8 resp(mx,mq),imsp(mx,mq),regp(mx,mq),imgp(mx,mq)
-      real*8 reue(mx,mq),imue(mx,mq),rede(mx,mq),imde(mx,mq)
-      real*8 rese(mx,mq),imse(mx,mq),rege(mx,mq),imge(mx,mq)
-      real*8 reuep(mx,mq),imuep(mx,mq),redep(mx,mq),imdep(mx,mq)
-      real*8 resep(mx,mq),imsep(mx,mq),regep(mx,mq),imgep(mx,mq)
+      interface
+        function readinsingle(nx,nq,nt,path,isim) result(arr)
+            integer nx,nq,nt
+            character(len=*) path
+            logical isim
+            real, dimension(nx,nq,nt) :: arr 
+        end function
+      end interface
 
-      real*8 reut3(mx,mq),imut3(mx,mq),redt3(mx,mq)
-      real*8 rest3(mx,mq),imst3(mx,mq),imdt3(mx,mq)
-      real*8 reupt3(mx,mq),imupt3(mx,mq),redpt3(mx,mq)
-      real*8 respt3(mx,mq),imspt3(mx,mq),imdpt3(mx,mq)
-      real*8 reuet3(mx,mq),imuet3(mx,mq),redet3(mx,mq)
-      real*8 reset3(mx,mq),imset3(mx,mq),imdet3(mx,mq)
-      real*8 reuept3(mx,mq),imuept3(mx,mq),redept3(mx,mq)
-      real*8 resept3(mx,mq),imsept3(mx,mq),imdept3(mx,mq)
+      real*8 reu(mx,mq,mt),imu(mx,mq,mt),red(mx,mq,mt),imd(mx,mq,mt)
+      real*8 res(mx,mq,mt),ims(mx,mq,mt),reg(mx,mq,mt),img(mx,mq,mt)
+      real*8 reup(mx,mq,mt),imup(mx,mq,mt),redp(mx,mq,mt),imdp(mx,mq,mt)
+      real*8 resp(mx,mq,mt),imsp(mx,mq,mt),regp(mx,mq,mt),imgp(mx,mq,mt)
+      real*8 reue(mx,mq,mt),imue(mx,mq,mt),rede(mx,mq,mt),imde(mx,mq,mt)
+      real*8 rese(mx,mq,mt),imse(mx,mq,mt),rege(mx,mq,mt),imge(mx,mq,mt)
+      real*8 reuep(mx,mq,mt),imuep(mx,mq,mt),redep(mx,mq,mt),
+     > imdep(mx,mq,mt)
+      real*8 resep(mx,mq,mt),imsep(mx,mq,mt),regep(mx,mq,mt),
+     > imgep(mx,mq,mt)
 
-      real*8 reut3d(mx,mq),imut3d(mx,mq),redt3d(mx,mq)
-      real*8 rest3d(mx,mq),imst3d(mx,mq),imdt3d(mx,mq)
-      real*8 reupt3d(mx,mq),imupt3d(mx,mq),redpt3d(mx,mq)
-      real*8 respt3d(mx,mq),imspt3d(mx,mq),imdpt3d(mx,mq)
-      real*8 reuet3d(mx,mq),imuet3d(mx,mq),redet3d(mx,mq)
-      real*8 reset3d(mx,mq),imset3d(mx,mq),imdet3d(mx,mq)
-      real*8 reuept3d(mx,mq),imuept3d(mx,mq),redept3d(mx,mq)
-      real*8 resept3d(mx,mq),imsept3d(mx,mq),imdept3d(mx,mq)
+      real*8 reut3(mx,mq,mt),imut3(mx,mq,mt),redt3(mx,mq,mt)
+      real*8 rest3(mx,mq,mt),imst3(mx,mq,mt),imdt3(mx,mq,mt)
+      real*8 reupt3(mx,mq,mt),imupt3(mx,mq,mt),redpt3(mx,mq,mt)
+      real*8 respt3(mx,mq,mt),imspt3(mx,mq,mt),imdpt3(mx,mq,mt)
+      real*8 reuet3(mx,mq,mt),imuet3(mx,mq,mt),redet3(mx,mq,mt)
+      real*8 reset3(mx,mq,mt),imset3(mx,mq,mt),imdet3(mx,mq,mt)
+      real*8 reuept3(mx,mq,mt),imuept3(mx,mq,mt),redept3(mx,mq,mt)
+      real*8 resept3(mx,mq,mt),imsept3(mx,mq,mt),imdept3(mx,mq,mt)
 
-      real*8 reul(mx,mq),imul(mx,mq),redl(mx,mq),imdl(mx,mq)
-      real*8 resl(mx,mq),imsl(mx,mq),regl(mx,mq),imgl(mx,mq)
-      real*8 reupl(mx,mq),imupl(mx,mq),redpl(mx,mq),imdpl(mx,mq)
-      real*8 respl(mx,mq),imspl(mx,mq),regpl(mx,mq),imgpl(mx,mq)
-      real*8 reuel(mx,mq),imuel(mx,mq),redel(mx,mq),imdel(mx,mq)
-      real*8 resel(mx,mq),imsel(mx,mq),regel(mx,mq),imgel(mx,mq)
-      real*8 reuepl(mx,mq),imuepl(mx,mq),redepl(mx,mq),imdepl(mx,mq)
-      real*8 resepl(mx,mq),imsepl(mx,mq),regepl(mx,mq),imgepl(mx,mq)
+      real*8 reut3d(mx,mq,mt),imut3d(mx,mq,mt),redt3d(mx,mq,mt)
+      real*8 rest3d(mx,mq,mt),imst3d(mx,mq,mt),imdt3d(mx,mq,mt)
+      real*8 reupt3d(mx,mq,mt),imupt3d(mx,mq,mt),redpt3d(mx,mq,mt)
+      real*8 respt3d(mx,mq,mt),imspt3d(mx,mq,mt),imdpt3d(mx,mq,mt)
+      real*8 reuet3d(mx,mq,mt),imuet3d(mx,mq,mt),redet3d(mx,mq,mt)
+      real*8 reset3d(mx,mq,mt),imset3d(mx,mq,mt),imdet3d(mx,mq,mt)
+      real*8 reuept3d(mx,mq,mt),imuept3d(mx,mq,mt),redept3d(mx,mq,mt)
+      real*8 resept3d(mx,mq,mt),imsept3d(mx,mq,mt),imdept3d(mx,mq,mt)
+
+      real*8 reul(mx,mq,mt),imul(mx,mq,mt),redl(mx,mq,mt),imdl(mx,mq,mt)
+      real*8 resl(mx,mq,mt),imsl(mx,mq,mt),regl(mx,mq,mt),imgl(mx,mq,mt)
+      real*8 reupl(mx,mq,mt),imupl(mx,mq,mt),redpl(mx,mq,mt),
+     > imdpl(mx,mq,mt)
+      real*8 respl(mx,mq,mt),imspl(mx,mq,mt),regpl(mx,mq,mt),
+     > imgpl(mx,mq,mt)
+      real*8 reuel(mx,mq,mt),imuel(mx,mq,mt),redel(mx,mq,mt),
+     > imdel(mx,mq,mt)
+      real*8 resel(mx,mq,mt),imsel(mx,mq,mt),regel(mx,mq,mt),
+     > imgel(mx,mq,mt)
+      real*8 reuepl(mx,mq,mt),imuepl(mx,mq,mt),redepl(mx,mq,mt),
+     > imdepl(mx,mq,mt)
+      real*8 resepl(mx,mq,mt),imsepl(mx,mq,mt),regepl(mx,mq,mt),
+     > imgepl(mx,mq,mt)
 
       common /ampsn/reul,imul,redl,imdl,resl,imsl,regl,imgl,reupl,imupl,
      > redpl,imdpl,respl,imspl,regpl,imgpl,reuel,imuel,redel,imdel,resel
@@ -1194,994 +1211,295 @@ C
      >  ,reuet3,imuet3,redet3,imdet3,reset3,imset3
      >  ,reuept3,imuept3,redept3,imdept3,resept3,imsept3
 
+C     READ KINEMATIC VARIABLES
 
-CMM   Read in data, depending whether LO (tord=1) or NLO (tord=2)
-C
-C     del and q loops
-C
+      open(unit=11,file='luamp.dat',status='unknown')
 
-C
-C     read in of twist-2
-C
+      do j = 1, nx
+            read(11,*) x
+
+            xx(j) = x
+
+         do i = 1, nq
+            read(11,*) q
+            
+            qq(i) = q
+            
+            do k = 1, nt
+                read(11,*) t,dum1,dum2
+
+                tt(k) = t
+
+            enddo
+         enddo
+      enddo
+
+      close(unit=11)
 
 
       if (spin1.eq.0D0) then
 
-       if (nord.eq.1) then
+        if (nord.eq.1) then
 
-      open(unit =11,file='luamp.dat',status='unknown')
-      do j = 1, nx
-            read(11,*) x
+           reu = readinsingle(nx,nq,nt,'luamp.dat',.false.)
+           imu = readinsingle(nx,nq,nt,'luamp.dat',.true.)
+           reul = readinsingle(nx,nq,nt,'luamp.dat',.false.)
+           imul = readinsingle(nx,nq,nt,'luamp.dat',.true.)
 
-            xx(j) = x
+           red = readinsingle(nx,nq,nt,'ldamp.dat',.false.)
+           imd = readinsingle(nx,nq,nt,'ldamp.dat',.true.)
+           redl = readinsingle(nx,nq,nt,'ldamp.dat',.false.)
+           imdl = readinsingle(nx,nq,nt,'ldamp.dat',.true.)
 
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            qq(i) = q
-            reu(j,i) = dum1
-            imu(j,i) = dum2
-            reul(j,i) = dum1
-            imul(j,i) = dum2
-         enddo
+           res = readinsingle(nx,nq,nt,'lsamp.dat',.false.)
+           ims = readinsingle(nx,nq,nt,'lsamp.dat',.true.)
+           resl = readinsingle(nx,nq,nt,'lsamp.dat',.false.)
+           imsl = readinsingle(nx,nq,nt,'lsamp.dat',.true.)
 
-      enddo
-      close(unit=11)
+        else
 
-      open(unit =11,file='ldamp.dat',status='unknown')
-      do j = 1, nx
-         read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            red(j,i) = dum1
-            imd(j,i) = dum2
-            redl(j,i) = dum1
-            imdl(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
+           reu = readinsingle(nx,nq,nt,'nlouamp.dat',.false.)
+           imu = readinsingle(nx,nq,nt,'nlouamp.dat',.true.)
+           reul = readinsingle(nx,nq,nt,'luamp.dat',.false.)
+           imul = readinsingle(nx,nq,nt,'luamp.dat',.true.)
 
-      open(unit =11,file='lsamp.dat',status='unknown')
-      do j = 1, nx
-         read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            res(j,i)= dum1
-            ims(j,i) = dum2
-            resl(j,i)= dum1
-            imsl(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
+           red = readinsingle(nx,nq,nt,'nlodamp.dat',.false.)
+           imd = readinsingle(nx,nq,nt,'nlodamp.dat',.true.)
+           redl = readinsingle(nx,nq,nt,'ldamp.dat',.false.)
+           imdl = readinsingle(nx,nq,nt,'ldamp.dat',.true.)
 
-      else
-
-      open(unit =11,file='luamp.dat',status='unknown')
-      do j = 1, nx
-            read(11,*) x
-            xx(j) = x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            qq(i) = q
-            reul(j,i) = dum1
-            imul(j,i) = dum2
-
-         enddo
-
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='ldamp.dat',status='unknown')
-      do j = 1, nx
-         read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            redl(j,i) = dum1
-            imdl(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='lsamp.dat',status='unknown')
-      do j = 1, nx
-         read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            resl(j,i)= dum1
-            imsl(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='nlouamp.dat',status='unknown')
-      do j = 1, nx
-            read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            reu(j,i) = dum1
-            imu(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='nlodamp.dat',status='unknown')
-      do j = 1, nx
-         read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            red(j,i) = dum1
-            imd(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='nlosamp.dat',status='unknown')
-      do j = 1, nx
-            read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            res(j,i)= dum1
-            ims(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
+           res = readinsingle(nx,nq,nt,'nlosamp.dat',.false.)
+           ims = readinsingle(nx,nq,nt,'nlosamp.dat',.true.)
+           resl = readinsingle(nx,nq,nt,'lsamp.dat',.false.)
+           imsl = readinsingle(nx,nq,nt,'lsamp.dat',.true.)
 
       endif
 
-C
-C     readin of twist-3
-C
-      open(unit =11,file='luamptw3.dat',status='unknown')
-      do j = 1, nx
-            read(11,*) x
+           reut3 = readinsingle(nx,nq,nt,'luamptw3.dat',.false.)
+           imut3 = readinsingle(nx,nq,nt,'luamptw3.dat',.true.)
+           reut3d = readinsingle(nx,nq,nt,'luamptw3d.dat',.false.)
+           imut3d = readinsingle(nx,nq,nt,'luamptw3d.dat',.true.)
 
-            xx(j) = x
+           redt3 = readinsingle(nx,nq,nt,'ldamptw3.dat',.false.)
+           imdt3 = readinsingle(nx,nq,nt,'ldamptw3.dat',.true.)
+           redt3d = readinsingle(nx,nq,nt,'ldamptw3d.dat',.false.)
+           imdt3d = readinsingle(nx,nq,nt,'ldamptw3d.dat',.true.)
 
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            qq(i) = q
-            reut3(j,i) = dum1
-           imut3(j,i) = dum2
-
-        enddo
-
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='ldamptw3.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           redt3(j,i) = dum1
-           imdt3(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='lsamptw3.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           rest3(j,i)= dum1
-           imst3(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='luamptw3d.dat',status='unknown')
-      do j = 1, nx
-           read(11,*) x
-
-           xx(j) = x
-
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           qq(i) = q
-           reut3d(j,i) = dum1
-           imut3d(j,i) = dum2
-
-        enddo
-
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='ldamptw3d.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           redt3d(j,i) = dum1
-           imdt3d(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='lsamptw3d.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           rest3d(j,i)= dum1
-           imst3d(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           rest3 = readinsingle(nx,nq,nt,'lsamptw3.dat',.false.)
+           imst3 = readinsingle(nx,nq,nt,'lsamptw3.dat',.true.)
+           rest3d = readinsingle(nx,nq,nt,'lsamptw3d.dat',.false.)
+           imst3d = readinsingle(nx,nq,nt,'lsamptw3d.dat',.true.)
 
       elseif(spin1.eq.1D0) then
 
-CLS ICI3
-
          if (nord.eq.1) then
 
-      open(unit =11,file='luamp.dat',status='unknown')
+           reu = readinsingle(nx,nq,nt,'luamp.dat',.false.)
+           imu = readinsingle(nx,nq,nt,'luamp.dat',.true.)
+           reul = readinsingle(nx,nq,nt,'luamp.dat',.false.)
+           imul = readinsingle(nx,nq,nt,'luamp.dat',.true.)
 
-      do j = 1, nx
-            read(11,*) x
-            xx(j) = x
+           red = readinsingle(nx,nq,nt,'ldamp.dat',.false.)
+           imd = readinsingle(nx,nq,nt,'ldamp.dat',.true.)
+           redl = readinsingle(nx,nq,nt,'ldamp.dat',.false.)
+           imdl = readinsingle(nx,nq,nt,'ldamp.dat',.true.)
 
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            qq(i) = q
-            reu(j,i) = dum1
-            imu(j,i) = dum2
-            reul(j,i) = dum1
-            imul(j,i) = dum2
-         enddo
+           res = readinsingle(nx,nq,nt,'lsamp.dat',.false.)
+           ims = readinsingle(nx,nq,nt,'lsamp.dat',.true.)
+           resl = readinsingle(nx,nq,nt,'lsamp.dat',.false.)
+           imsl = readinsingle(nx,nq,nt,'lsamp.dat',.true.)
 
-      enddo
-      close(unit=11)
 
-      open(unit =11,file='ldamp.dat',status='unknown')
-      do j = 1, nx
-         read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            red(j,i) = dum1
-            imd(j,i) = dum2
-            redl(j,i) = dum1
-            imdl(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
+           reup = readinsingle(nx,nq,nt,'luamppol.dat',.false.)
+           imup = readinsingle(nx,nq,nt,'luamppol.dat',.true.)
+           reupl = readinsingle(nx,nq,nt,'luamppol.dat',.false.)
+           imupl = readinsingle(nx,nq,nt,'luamppol.dat',.true.)
 
-      open(unit =11,file='lsamp.dat',status='unknown')
-      do j = 1, nx
-         read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            res(j,i)= dum1
-            ims(j,i) = dum2
-            resl(j,i)= dum1
-            imsl(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
+           redp = readinsingle(nx,nq,nt,'ldamppol.dat',.false.)
+           imdp = readinsingle(nx,nq,nt,'ldamppol.dat',.true.)
+           redpl = readinsingle(nx,nq,nt,'ldamppol.dat',.false.)
+           imdpl = readinsingle(nx,nq,nt,'ldamppol.dat',.true.)
 
-      open(unit =11,file='luamppol.dat',status='unknown')
-      do j = 1, nx
-         read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            reup(j,i) = dum1
-            imup(j,i) = dum2
-            reupl(j,i)= dum1
-            imupl(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
+           resp = readinsingle(nx,nq,nt,'lsamppol.dat',.false.)
+           imsp = readinsingle(nx,nq,nt,'lsamppol.dat',.true.)
+           respl = readinsingle(nx,nq,nt,'lsamppol.dat',.false.)
+           imspl = readinsingle(nx,nq,nt,'lsamppol.dat',.true.)
 
-      open(unit =11,file='ldamppol.dat',status='unknown')
-      do j = 1, nx
-         read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            redp(j,i) = dum1
-            imdp(j,i) = dum2
-            redpl(j,i) = dum1
-            imdpl(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
 
-      open(unit =11,file='lsamppol.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           resp(j,i)= dum1
-           imsp(j,i) = dum2
-           respl(j,i)= dum1
-           imspl(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           reue = readinsingle(nx,nq,nt,'luampe.dat',.false.)
+           imue = readinsingle(nx,nq,nt,'luampe.dat',.true.)
+           reuel = readinsingle(nx,nq,nt,'luampe.dat',.false.)
+           imuel = readinsingle(nx,nq,nt,'luampe.dat',.true.)
 
-      open(unit =11,file='luampe.dat',status='unknown')
-      do j = 1, nx
-           read(11,*) x
-           xx(j) = x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           qq(i) = q
-           reue(j,i) = dum1
-           imue(j,i) = dum2
-           reuel(j,i) = dum1
-           imuel(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           rede = readinsingle(nx,nq,nt,'ldampe.dat',.false.)
+           imde = readinsingle(nx,nq,nt,'ldampe.dat',.true.)
+           redel = readinsingle(nx,nq,nt,'ldampe.dat',.false.)
+           imdel = readinsingle(nx,nq,nt,'ldampe.dat',.true.)
 
-      open(unit =11,file='ldampe.dat',status='unknown')
-      do j = 1, nx
-       read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           rede(j,i) = dum1
-           imde(j,i) = dum2
-           redel(j,i) = dum1
-           imdel(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
-      open(unit =11,file='lsampe.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           rese(j,i)= dum1
-           imse(j,i) = dum2
-           resel(j,i)= dum1
-           imsel(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           rese = readinsingle(nx,nq,nt,'lsampe.dat',.false.)
+           imse = readinsingle(nx,nq,nt,'lsampe.dat',.true.)
+           resel = readinsingle(nx,nq,nt,'lsampe.dat',.false.)
+           imsel = readinsingle(nx,nq,nt,'lsampe.dat',.true.)
 
-      open(unit =11,file='luamppole.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           reuep(j,i) = dum1
-           imuep(j,i) = dum2
-           reuepl(j,i) = dum1
-           imuepl(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
 
-      open(unit =11,file='ldamppole.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           redep(j,i) = dum1
-           imdep(j,i) = dum2
-           redepl(j,i) = dum1
-           imdepl(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           reuep = readinsingle(nx,nq,nt,'luamppole.dat',.false.)
+           imuep = readinsingle(nx,nq,nt,'luamppole.dat',.true.)
+           reuepl = readinsingle(nx,nq,nt,'luamppole.dat',.false.)
+           imuepl = readinsingle(nx,nq,nt,'luamppole.dat',.true.)
 
-      open(unit =11,file='lsamppole.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           resep(j,i)= dum1
-           imsep(j,i) = dum2
-           resepl(j,i)= dum1
-           imsepl(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           redep = readinsingle(nx,nq,nt,'ldamppole.dat',.false.)
+           imdep = readinsingle(nx,nq,nt,'ldamppole.dat',.true.)
+           redepl = readinsingle(nx,nq,nt,'ldamppole.dat',.false.)
+           imdepl = readinsingle(nx,nq,nt,'ldamppole.dat',.true.)
 
-      else
+           resep = readinsingle(nx,nq,nt,'lsamppole.dat',.false.)
+           imsep = readinsingle(nx,nq,nt,'lsamppole.dat',.true.)
+           resepl = readinsingle(nx,nq,nt,'lsamppole.dat',.false.)
+           imsepl = readinsingle(nx,nq,nt,'lsamppole.dat',.true.)
 
-CLS LO files+ NLO files...
+        else
 
-      open(unit =11,file='luamp.dat',status='unknown')
-      do j = 1, nx
-            read(11,*) x
+           reu = readinsingle(nx,nq,nt,'nlouamp.dat',.false.)
+           imu = readinsingle(nx,nq,nt,'nlouamp.dat',.true.)
+           reul = readinsingle(nx,nq,nt,'luamp.dat',.false.)
+           imul = readinsingle(nx,nq,nt,'luamp.dat',.true.)
 
-            xx(j) = x
+           red = readinsingle(nx,nq,nt,'nlodamp.dat',.false.)
+           imd = readinsingle(nx,nq,nt,'nlodamp.dat',.true.)
+           redl = readinsingle(nx,nq,nt,'ldamp.dat',.false.)
+           imdl = readinsingle(nx,nq,nt,'ldamp.dat',.true.)
 
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            qq(i) = q
-            reul(j,i) = dum1
-            imul(j,i) = dum2
+           res = readinsingle(nx,nq,nt,'nlosamp.dat',.false.)
+           ims = readinsingle(nx,nq,nt,'nlosamp.dat',.true.)
+           resl = readinsingle(nx,nq,nt,'lsamp.dat',.false.)
+           imsl = readinsingle(nx,nq,nt,'lsamp.dat',.true.)
 
-         enddo
+           reg = readinsingle(nx,nq,nt,'nlogamp.dat',.false.)
+           img = readinsingle(nx,nq,nt,'nlogamp.dat',.true.)
 
-      enddo
-      close(unit=11)
 
-      open(unit =11,file='ldamp.dat',status='unknown')
-      do j = 1, nx
-         read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            redl(j,i) = dum1
-            imdl(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
+           reup = readinsingle(nx,nq,nt,'nlouamppol.dat',.false.)
+           imup = readinsingle(nx,nq,nt,'nlouamppol.dat',.true.)
+           reupl = readinsingle(nx,nq,nt,'luamppol.dat',.false.)
+           imupl = readinsingle(nx,nq,nt,'luamppol.dat',.true.)
 
-      open(unit =11,file='lsamp.dat',status='unknown')
-      do j = 1, nx
-         read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            resl(j,i)= dum1
-            imsl(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
+           redp = readinsingle(nx,nq,nt,'nlodamppol.dat',.false.)
+           imdp = readinsingle(nx,nq,nt,'nlodamppol.dat',.true.)
+           redpl = readinsingle(nx,nq,nt,'ldamppol.dat',.false.)
+           imdpl = readinsingle(nx,nq,nt,'ldamppol.dat',.true.)
 
-      open(unit =11,file='luamppol.dat',status='unknown')
-      do j = 1, nx
-         read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            reupl(j,i) = dum1
-            imupl(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
+           resp = readinsingle(nx,nq,nt,'nlosamppol.dat',.false.)
+           imsp = readinsingle(nx,nq,nt,'nlosamppol.dat',.true.)
+           respl = readinsingle(nx,nq,nt,'lsamppol.dat',.false.)
+           imspl = readinsingle(nx,nq,nt,'lsamppol.dat',.true.)
 
-      open(unit =11,file='ldamppol.dat',status='unknown')
-      do j = 1, nx
-         read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            redpl(j,i) = dum1
-            imdpl(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
+           regp = readinsingle(nx,nq,nt,'nlogamppol.dat',.false.)
+           imgp = readinsingle(nx,nq,nt,'nlogamppol.dat',.true.)
 
-      open(unit =11,file='lsamppol.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           respl(j,i)= dum1
-           imspl(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
 
-      open(unit =11,file='luampe.dat',status='unknown')
-      do j = 1, nx
-           read(11,*) x
-           xx(j) = x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           qq(i) = q
-           reuel(j,i) = dum1
-           imuel(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           reue = readinsingle(nx,nq,nt,'nlouampe.dat',.false.)
+           imue = readinsingle(nx,nq,nt,'nlouampe.dat',.true.)
+           reuel = readinsingle(nx,nq,nt,'luampe.dat',.false.)
+           imuel = readinsingle(nx,nq,nt,'luampe.dat',.true.)
 
-      open(unit =11,file='ldampe.dat',status='unknown')
-      do j = 1, nx
-       read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           redel(j,i) = dum1
-           imdel(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
-      open(unit =11,file='lsampe.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           resel(j,i)= dum1
-           imsel(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           rede = readinsingle(nx,nq,nt,'nlodampe.dat',.false.)
+           imde = readinsingle(nx,nq,nt,'nlodampe.dat',.true.)
+           redel = readinsingle(nx,nq,nt,'ldampe.dat',.false.)
+           imdel = readinsingle(nx,nq,nt,'ldampe.dat',.true.)
 
-      open(unit =11,file='luamppole.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           reuepl(j,i) = dum1
-           imuepl(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           rese = readinsingle(nx,nq,nt,'nlosampe.dat',.false.)
+           imse = readinsingle(nx,nq,nt,'nlosampe.dat',.true.)
+           resel = readinsingle(nx,nq,nt,'lsampe.dat',.false.)
+           imsel = readinsingle(nx,nq,nt,'lsampe.dat',.true.)
 
-      open(unit =11,file='ldamppole.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           redepl(j,i) = dum1
-           imdepl(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           rege = readinsingle(nx,nq,nt,'nlogampe.dat',.false.)
+           imge = readinsingle(nx,nq,nt,'nlogampe.dat',.true.)
 
-      open(unit =11,file='lsamppole.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           resepl(j,i)= dum1
-           imsepl(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
 
-CLS NLO files...
-      open(unit =11,file='nlouamp.dat',status='unknown')
-      do j = 1, nx
-            read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            reu(j,i) = dum1
-            imu(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
+           reuep = readinsingle(nx,nq,nt,'nlouamppole.dat',.false.)
+           imuep = readinsingle(nx,nq,nt,'nlouamppole.dat',.true.)
+           reuepl = readinsingle(nx,nq,nt,'luamppole.dat',.false.)
+           imuepl = readinsingle(nx,nq,nt,'luamppole.dat',.true.)
 
-      open(unit =11,file='nlodamp.dat',status='unknown')
-      do j = 1, nx
-         read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            red(j,i) = dum1
-            imd(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
+           redep = readinsingle(nx,nq,nt,'nlodamppole.dat',.false.)
+           imdep = readinsingle(nx,nq,nt,'nlodamppole.dat',.true.)
+           redepl = readinsingle(nx,nq,nt,'ldamppole.dat',.false.)
+           imdepl = readinsingle(nx,nq,nt,'ldamppole.dat',.true.)
 
-      open(unit =11,file='nlosamp.dat',status='unknown')
-      do j = 1, nx
-            read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            res(j,i)= dum1
-            ims(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
+           resep = readinsingle(nx,nq,nt,'nlosamppole.dat',.false.)
+           imsep = readinsingle(nx,nq,nt,'nlosamppole.dat',.true.)
+           resepl = readinsingle(nx,nq,nt,'lsamppole.dat',.false.)
+           imsepl = readinsingle(nx,nq,nt,'lsamppole.dat',.true.)
 
-      open(unit =11,file='nlouamppol.dat',status='unknown')
-      do j = 1, nx
-           read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           reup(j,i) = dum1
-           imup(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           regep = readinsingle(nx,nq,nt,'nlogamppole.dat',.false.)
+           imgep = readinsingle(nx,nq,nt,'nlogamppole.dat',.true.)
 
-      open(unit =11,file='nlodamppol.dat',status='unknown')
-      do j = 1, nx
-           read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           redp(j,i) = dum1
-           imdp(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+        endif
 
-      open(unit =11,file='nlosamppol.dat',status='unknown')
-      do j = 1, nx
-           read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           resp(j,i)= dum1
-           imsp(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           reut3 = readinsingle(nx,nq,nt,'luamptw3.dat',.false.)
+           imut3 = readinsingle(nx,nq,nt,'luamptw3.dat',.true.)
+           reut3d = readinsingle(nx,nq,nt,'luamptw3d.dat',.false.)
+           imut3d = readinsingle(nx,nq,nt,'luamptw3d.dat',.true.)
 
-      open(unit =11,file='nlogamp.dat',status='unknown')
-      do j = 1, nx
-            read(11,*) x
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            reg(j,i) = dum1
-            img(j,i) = dum2
-         enddo
-      enddo
-      close(unit=11)
+           redt3 = readinsingle(nx,nq,nt,'ldamptw3.dat',.false.)
+           imdt3 = readinsingle(nx,nq,nt,'ldamptw3.dat',.true.)
+           redt3d = readinsingle(nx,nq,nt,'ldamptw3d.dat',.false.)
+           imdt3d = readinsingle(nx,nq,nt,'ldamptw3d.dat',.true.)
 
-      open(unit =11,file='nlogamppol.dat',status='unknown')
-      do j = 1, nx
-           read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           regp(j,i) = dum1
-           imgp(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           rest3 = readinsingle(nx,nq,nt,'lsamptw3.dat',.false.)
+           imst3 = readinsingle(nx,nq,nt,'lsamptw3.dat',.true.)
+           rest3d = readinsingle(nx,nq,nt,'lsamptw3d.dat',.false.)
+           imst3d = readinsingle(nx,nq,nt,'lsamptw3d.dat',.true.)
 
-      open(unit =11,file='nlouampe.dat',status='unknown')
-      do j = 1, nx
-           read(11,*) x
-           xx(j) = x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           qq(i) = q
-           reue(j,i) = dum1
-           imue(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
 
-      open(unit =11,file='nlodampe.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           rede(j,i) = dum1
-           imde(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           reupt3 = readinsingle(nx,nq,nt,'luamppoltw3.dat',.false.)
+           imupt3 = readinsingle(nx,nq,nt,'luamppoltw3.dat',.true.)
+           reupt3d = readinsingle(nx,nq,nt,'luamppoltw3d.dat',.false.)
+           imupt3d = readinsingle(nx,nq,nt,'luamppoltw3d.dat',.true.)
 
-      open(unit =11,file='nlosampe.dat',status='unknown')
-      do j = 1, nx
-           read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           rese(j,i)= dum1
-           imse(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           redpt3 = readinsingle(nx,nq,nt,'ldamppoltw3.dat',.false.)
+           imdpt3 = readinsingle(nx,nq,nt,'ldamppoltw3.dat',.true.)
+           redpt3d = readinsingle(nx,nq,nt,'ldamppoltw3d.dat',.false.)
+           imdpt3d = readinsingle(nx,nq,nt,'ldamppoltw3d.dat',.true.)
 
-      open(unit =11,file='nlouamppole.dat',status='unknown')
-      do j = 1, nx
-           read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           reuep(j,i) = dum1
-           imuep(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           respt3 = readinsingle(nx,nq,nt,'lsamppoltw3.dat',.false.)
+           imspt3 = readinsingle(nx,nq,nt,'lsamppoltw3.dat',.true.)
+           respt3d = readinsingle(nx,nq,nt,'lsamppoltw3d.dat',.false.)
+           imspt3d = readinsingle(nx,nq,nt,'lsamppoltw3d.dat',.true.)
 
-      open(unit =11,file='nlodamppole.dat',status='unknown')
-      do j = 1, nx
-           read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           redep(j,i) = dum1
-           imdep(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
-      open(unit =11,file='nlosamppole.dat',status='unknown')
-      do j = 1, nx
-           read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           resep(j,i)= dum1
-           imsep(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
 
-      open(unit =11,file='nlogampe.dat',status='unknown')
-      do j = 1, nx
-           read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           rege(j,i) = dum1
-           imge(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           reuet3 = readinsingle(nx,nq,nt,'luampetw3.dat',.false.)
+           imuet3 = readinsingle(nx,nq,nt,'luampetw3.dat',.true.)
+           reuet3d = readinsingle(nx,nq,nt,'luampetw3d.dat',.false.)
+           imuet3d = readinsingle(nx,nq,nt,'luampetw3d.dat',.true.)
 
-      open(unit =11,file='nlogamppole.dat',status='unknown')
-      do j = 1, nx
-           read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           regep(j,i) = dum1
-           imgep(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
+           redet3 = readinsingle(nx,nq,nt,'ldampetw3.dat',.false.)
+           imdet3 = readinsingle(nx,nq,nt,'ldampetw3.dat',.true.)
+           redet3d = readinsingle(nx,nq,nt,'ldampetw3d.dat',.false.)
+           imdet3d = readinsingle(nx,nq,nt,'ldampetw3d.dat',.true.)
+
+           reset3 = readinsingle(nx,nq,nt,'lsampetw3.dat',.false.)
+           imset3 = readinsingle(nx,nq,nt,'lsampetw3.dat',.true.)
+           reset3d = readinsingle(nx,nq,nt,'lsampetw3d.dat',.false.)
+           imset3d = readinsingle(nx,nq,nt,'lsampetw3d.dat',.true.)
+
+
+           reuept3 = readinsingle(nx,nq,nt,'luamppoletw3.dat',.false.)
+           imuept3 = readinsingle(nx,nq,nt,'luamppoletw3.dat',.true.)
+           reuept3d = readinsingle(nx,nq,nt,'luamppoletw3d.dat',.false.)
+           imuept3d = readinsingle(nx,nq,nt,'luamppoletw3d.dat',.true.)
+
+           redept3 = readinsingle(nx,nq,nt,'ldamppoletw3.dat',.false.)
+           imdept3 = readinsingle(nx,nq,nt,'ldamppoletw3.dat',.true.)
+           redept3d = readinsingle(nx,nq,nt,'ldamppoletw3d.dat',.false.)
+           imdept3d = readinsingle(nx,nq,nt,'ldamppoletw3d.dat',.true.)
+
+           resept3 = readinsingle(nx,nq,nt,'lsamppoletw3.dat',.false.)
+           imsept3 = readinsingle(nx,nq,nt,'lsamppoletw3.dat',.true.)
+           resept3d = readinsingle(nx,nq,nt,'lsamppoletw3d.dat',.false.)
+           imsept3d = readinsingle(nx,nq,nt,'lsamppoletw3d.dat',.true.)
 
       endif
-
-C
-C     readin of twist-3
-C
-      open(unit =11,file='luamptw3.dat',status='unknown')
-      do j = 1, nx
-            read(11,*) x
-
-            xx(j) = x
-
-         do i = 1,nq
-            read(11,*) q,dum1,dum2
-            qq(i) = q
-            reut3(j,i) = dum1
-           imut3(j,i) = dum2
-
-        enddo
-
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='ldamptw3.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           redt3(j,i) = dum1
-           imdt3(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='lsamptw3.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           rest3(j,i)= dum1
-           imst3(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='luamppoltw3.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           reupt3(j,i) = dum1
-           imupt3(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='ldamppoltw3.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           redpt3(j,i) = dum1
-           imdpt3(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='lsamppoltw3.dat',status='unknown')
-      do j = 1, nx
-       read(11,*) x
-       do i = 1,nq
-          read(11,*) q,dum1,dum2
-          respt3(j,i)= dum1
-          imspt3(j,i) = dum2
-       enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='luampetw3.dat',status='unknown')
-      do j = 1, nx
-          read(11,*) x
-          xx(j) = x
-       do i = 1,nq
-          read(11,*) q,dum1,dum2
-          qq(i) = q
-          reuet3(j,i) = dum1
-          imuet3(j,i) = dum2
-       enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='ldampetw3.dat',status='unknown')
-      do j = 1, nx
-      read(11,*) x
-       do i = 1,nq
-          read(11,*) q,dum1,dum2
-          redet3(j,i) = dum1
-          imdet3(j,i) = dum2
-       enddo
-      enddo
-      close(unit=11)
-      open(unit =11,file='lsampetw3.dat',status='unknown')
-      do j = 1, nx
-       read(11,*) x
-       do i = 1,nq
-          read(11,*) q,dum1,dum2
-          reset3(j,i)= dum1
-          imset3(j,i) = dum2
-       enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='luamppoletw3.dat',status='unknown')
-      do j = 1, nx
-       read(11,*) x
-       do i = 1,nq
-          read(11,*) q,dum1,dum2
-          reuept3(j,i) = dum1
-          imuept3(j,i) = dum2
-       enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='ldamppoletw3.dat',status='unknown')
-      do j = 1, nx
-       read(11,*) x
-       do i = 1,nq
-          read(11,*) q,dum1,dum2
-          redept3(j,i) = dum1
-          imdept3(j,i) = dum2
-       enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='lsamppoletw3.dat',status='unknown')
-      do j = 1, nx
-       read(11,*) x
-       do i = 1,nq
-          read(11,*) q,dum1,dum2
-          resept3(j,i)= dum1
-          imsept3(j,i) = dum2
-       enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='luamptw3d.dat',status='unknown')
-      do j = 1, nx
-           read(11,*) x
-
-           xx(j) = x
-
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           qq(i) = q
-           reut3d(j,i) = dum1
-           imut3d(j,i) = dum2
-
-        enddo
-
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='ldamptw3d.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           redt3d(j,i) = dum1
-           imdt3d(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='lsamptw3d.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           rest3d(j,i)= dum1
-           imst3d(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='luamppoltw3d.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           reupt3d(j,i) = dum1
-           imupt3d(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='ldamppoltw3d.dat',status='unknown')
-      do j = 1, nx
-        read(11,*) x
-        do i = 1,nq
-           read(11,*) q,dum1,dum2
-           redpt3d(j,i) = dum1
-           imdpt3d(j,i) = dum2
-        enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='lsamppoltw3d.dat',status='unknown')
-      do j = 1, nx
-       read(11,*) x
-       do i = 1,nq
-          read(11,*) q,dum1,dum2
-          respt3d(j,i)= dum1
-          imspt3d(j,i) = dum2
-       enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='luampetw3d.dat',status='unknown')
-      do j = 1, nx
-          read(11,*) x
-          xx(j) = x
-       do i = 1,nq
-          read(11,*) q,dum1,dum2
-          qq(i) = q
-          reuet3d(j,i) = dum1
-          imuet3d(j,i) = dum2
-       enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='ldampetw3d.dat',status='unknown')
-      do j = 1, nx
-      read(11,*) x
-       do i = 1,nq
-          read(11,*) q,dum1,dum2
-          redet3d(j,i) = dum1
-          imdet3d(j,i) = dum2
-       enddo
-      enddo
-      close(unit=11)
-      open(unit =11,file='lsampetw3d.dat',status='unknown')
-      do j = 1, nx
-       read(11,*) x
-       do i = 1,nq
-          read(11,*) q,dum1,dum2
-          reset3d(j,i)= dum1
-          imset3d(j,i) = dum2
-       enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='luamppoletw3d.dat',status='unknown')
-      do j = 1, nx
-       read(11,*) x
-       do i = 1,nq
-          read(11,*) q,dum1,dum2
-          reuept3d(j,i) = dum1
-          imuept3d(j,i) = dum2
-       enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='ldamppoletw3d.dat',status='unknown')
-      do j = 1, nx
-       read(11,*) x
-       do i = 1,nq
-          read(11,*) q,dum1,dum2
-          redept3d(j,i) = dum1
-          imdept3d(j,i) = dum2
-       enddo
-      enddo
-      close(unit=11)
-
-      open(unit =11,file='lsamppoletw3d.dat',status='unknown')
-      do j = 1, nx
-       read(11,*) x
-       do i = 1,nq
-          read(11,*) q,dum1,dum2
-          resept3d(j,i)= dum1
-          imsept3d(j,i) = dum2
-       enddo
-      enddo
-      close(unit=11)
-
-      endif
-
 
       return
       end
