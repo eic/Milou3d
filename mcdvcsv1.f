@@ -1647,6 +1647,18 @@ C
         end function
       end interface
 
+      real*8  it_form
+      real*8  bnew_q,bnew_g,xdel_s,bnew_slopeq,bnew_slopeg,q20
+      common/form_factors/it_form,bnew_q,bnew_g,xdel_s,q20,
+     +                            bnew_slopeq,bnew_slopeg
+      real*8 tex
+
+      if (it_form.eq.8d0) then
+        tex = t
+      else
+        tex = 0.0
+      endif 
+
       if (iord.eq.1) then
 
             sw = 0.0
@@ -1680,16 +1692,16 @@ C
 
          if (icountxq.eq.1) then
 
-            resu = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reu)
-            resd = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,red)
-            ress = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,res)
-            resu1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imu)
-            resd1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imd)
-            ress1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,ims)
+            resu = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reu)
+            resd = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,red)
+            ress = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,res)
+            resu1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imu)
+            resd1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imd)
+            ress1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,ims)
 
             if (iord.eq.2) then
-             resg = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reg)
-             resg1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,img)
+             resg = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reg)
+             resg1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,img)
             endif
 
          endif
@@ -1708,16 +1720,16 @@ CLS ICI1
 
         if (icountxq.eq.1) then
 
-            resu = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reu)
-            resd = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,red)
-            ress = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,res)
-            resu1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imu)
-            resd1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imd)
-            ress1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,ims)
+            resu = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reu)
+            resd = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,red)
+            ress = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,res)
+            resu1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imu)
+            resd1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imd)
+            ress1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,ims)
 
             if (iord.eq.2) then
-             resg = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reg)
-             resg1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,img)
+             resg = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reg)
+             resg1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,img)
             endif
 
          endif
@@ -1733,16 +1745,16 @@ CLS ICI1
 
       if (icountxq.eq.1) then
 
-            resue = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reue)
-            resde = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,rede)
-            resse = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,rese)
-            resu1e = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imue)
-            resd1e = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imde)
-            ress1e = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imse)
+            resue = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reue)
+            resde = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,rede)
+            resse = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,rese)
+            resu1e = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imue)
+            resd1e = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imde)
+            ress1e = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imse)
 
             if (iord.eq.2) then
-             resge = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,rege)
-             resg1e = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imge)
+             resge = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,rege)
+             resg1e = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imge)
             endif
 
          endif
@@ -1754,16 +1766,16 @@ CLS ICI1
 
       if (icountxq.eq.1) then
 
-            resup = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reup)
-            resdp = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redp)
-            ressp = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,resp)
-            resu1p = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imup)
-            resd1p = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdp)
-            ress1p = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imsp)
+            resup = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reup)
+            resdp = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,redp)
+            ressp = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,resp)
+            resu1p = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imup)
+            resd1p = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imdp)
+            ress1p = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imsp)
 
             if (iord.eq.2) then
-             resgp = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,regp)
-             resg1p = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imgp)
+             resgp = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,regp)
+             resg1p = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imgp)
             endif
 
          endif
@@ -1775,17 +1787,17 @@ CLS ICI1
 
       if (icountxq.eq.1) then
 
-            resupe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reuep)
-            resdpe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redep)
-            resspe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,resep)
-            resu1pe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imuep)
-            resd1pe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdep)
-            ress1pe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imsep)
+          resupe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reuep)
+          resdpe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,redep)
+          resspe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,resep)
+          resu1pe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imuep)
+          resd1pe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imdep)
+          ress1pe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imsep)
 
-            if (iord.eq.2) then
-             resgpe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,regep)
-             resg1pe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imgep)
-            endif
+          if (iord.eq.2) then
+           resgpe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,regep)
+           resg1pe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imgep)
+          endif
 
          endif
 
@@ -1949,6 +1961,24 @@ C
       integer isel_twist3
       common /isel_twist3/ isel_twist3
 
+      interface
+        function interpolate3D(nx,nq,nt,xx,qq,tt,x,q2,t,arr) result(amp)
+            integer mx,mq,mt
+            parameter(mx=100,mq=100,mt=100)
+            integer nx,nq,nt
+            real*8 xx(mx)
+            real*8 qq(mq)
+            real*8 tt(mt)
+            real*8 x,q2,t
+            real*8 arr(mx,mq,mt)
+
+            real*8 amp
+        end function
+      end interface
+
+      real*8 tex
+      tex = 0.0
+
       if (isel_twist3.eq.0) then
 
       reutw3   = 0D0
@@ -1993,19 +2023,19 @@ C
 
          if (icountxq.eq.1) then
 
-            resuh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reul)
-            resdh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redl)
-            ressh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,resl)
-            resu1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imul)
-            resd1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdl)
-            ress1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imsl)
+         resuh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reul)
+         resdh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,redl)
+         ressh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,resl)
+         resu1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imul)
+         resd1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imdl)
+         ress1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imsl)
 
-            resu2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reut3d)
-            resd2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redt3d)
-            ress2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,rest3d)
-            resu3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imut3d)
-            resd3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdt3d)
-            ress3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imst3d)
+         resu2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reut3d)
+         resd2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,redt3d)
+         ress2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,rest3d)
+         resu3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imut3d)
+         resd3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imdt3d)
+         ress3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imst3d)
 
          endif
 
@@ -2040,40 +2070,40 @@ C
 
          if (icountxq.eq.1) then
 
-            resuh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reul)
-            resdh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redl)
-            ressh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,resl)
-            resu1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imul)
-            resd1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdl)
-            ress1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imsl)
+         resuh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reul)
+         resdh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,redl)
+         ressh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,resl)
+         resu1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imul)
+         resd1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imdl)
+         ress1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imsl)
 
-            resu2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reut3d)
-            resd2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redt3d)
-            ress2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,rest3d)
-            resu3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imut3d)
-            resd3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdt3d)
-            ress3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imst3d)
+         resu2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reut3d)
+         resd2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,redt3d)
+         ress2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,rest3d)
+         resu3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imut3d)
+         resd3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imdt3d)
+         ress3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imst3d)
 
-            resu4 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reut3)
-            resd4 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redt3)
-            ress4 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,rest3)
-            resu5 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imut3)
-            resd5 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdt3)
-            ress5 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imst3)
+         resu4 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reut3)
+         resd4 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,redt3)
+         ress4 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,rest3)
+         resu5 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imut3)
+         resd5 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imdt3)
+         ress5 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imst3)
 
-            resu6 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reuet3)
-            resd6 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redet3)
-            ress6 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reset3)
-            resu7 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imuet3)
-            resd7 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdet3)
-            ress7 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imset3)
+         resu6 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reuet3)
+         resd6 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,redet3)
+         ress6 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reset3)
+         resu7 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imuet3)
+         resd7 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imdet3)
+         ress7 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imset3)
 
-            resu8 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reupt3)
-            resd8 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redpt3)
-            ress8 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,respt3)
-            resu9 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imupt3)
-            resd9 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdpt3)
-            ress9 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imspt3)
+         resu8 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reupt3)
+         resd8 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,redpt3)
+         ress8 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,respt3)
+         resu9 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imupt3)
+         resd9 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imdpt3)
+         ress9 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imspt3)
 
          endif
 
@@ -2108,20 +2138,19 @@ C
 
        if (icountxq.eq.1) then
 
-           resue1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reuel)
-           resde1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redel)
-           resse1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,resel)
-           resu1e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imuel)
-           resd1e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdel)
-           ress1e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imsel)
+       resue1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reuel)
+       resde1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,redel)
+       resse1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,resel)
+       resu1e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imuel)
+       resd1e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imdel)
+       ress1e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imsel)
 
-
-           resu2e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reuet3d)
-           resd2e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redet3d)
-           ress2e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reset3d)
-           resu3e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imuet3d)
-           resd3e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdet3d)
-           ress3e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imset3d)
+       resu2e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reuet3d)
+       resd2e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,redet3d)
+       ress2e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reset3d)
+       resu3e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imuet3d)
+       resd3e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imdet3d)
+       ress3e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imset3d)
 
        endif
 
@@ -2157,21 +2186,21 @@ C
 
       if (icountxq.eq.1) then
 
-           resuht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reupl)
-           resdht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redpl)
-           ressht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,respl)
-           resu1ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imupl)
-           resd1ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdpl)
-           ress1ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imspl)
+      resuht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reupl)
+      resdht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,redpl)
+      ressht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,respl)
+      resu1ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imupl)
+      resd1ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imdpl)
+      ress1ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imspl)
 
-           resu2ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reupt3d)
-           resd2ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redpt3d)
-           ress2ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,respt3d)
-           resu3ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imupt3d)
-           resd3ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdpt3d)
-           ress3ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imspt3d)
+      resu2ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reupt3d)
+      resd2ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,redpt3d)
+      ress2ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,respt3d)
+      resu3ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imupt3d)
+      resd3ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imdpt3d)
+      ress3ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imspt3d)
 
-       endif
+      endif
 
       reuptw3 = resuht + resu2ht + ((2D0*mp**2*del)/
      > ((1D0-del)*(t-tmin)))*(del*(1-t/(4D0*mp**2))*resu8
@@ -2205,19 +2234,20 @@ C
 
       if (icountxq.eq.1) then
 
-          resuet = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reuepl)
-          resdet = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redepl)
-          resset = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,resepl)
-          resu1et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imuepl)
-          resd1et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdepl)
-          ress1et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imsepl)
+      resuet = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reuepl)
+      resdet = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,redepl)
+      resset = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,resepl)
+      resu1et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imuepl)
+      resd1et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imdepl)
+      ress1et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imsepl)
 
-          resu2et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reuept3d)
-          resd2et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redept3d)
-          ress2et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,resept3d)
-          resu3et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imuept3d)
-          resd3et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdept3d)
-          ress3et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imsept3d)
+      resu2et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,reuept3d)
+      resd2et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,redept3d)
+      ress2et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,resept3d)
+      resu3et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imuept3d)
+      resd3et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imdept3d)
+      ress3et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,tex,imsept3d)
+
        endif
 
       reueptw3 = resuet + resu2et + ((2D0*mp**2*del)/
@@ -3885,6 +3915,19 @@ C
        bnew = bnew/2.d0
        if (del.lt.xdel_s)  exg  = dexp(t*bnew)
        if (del.ge.xdel_s)  exg  = 1./(1.-t/ma**2)**3
+      endif
+
+      if (it_form.eq.8d0) then
+       f1u=1.
+       f1d=1.
+       f1s=1.
+       exg=1.
+       f2u=1.
+       f2d=1.
+       f2s=1.
+       g1=1.
+       g1sea=1.
+       gpi=1.
       endif
 
       return
