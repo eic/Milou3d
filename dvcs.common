@@ -5,7 +5,7 @@
       integer stIRFRA
       integer stIGEN,stNGEN,stNCALL,stITMX1,stITMX2,stIDEBUG
       integer stNPRINT
-      integer stNX,stNQ,stIPRO,stIORD,stNSET,stITFORM
+      integer stNX,stNQ,stNT,stIPRO,stIORD,stNSET,stITFORM
       integer stIRAD
       real stELEP,stETARG,stLCHAR,stLPOL,stTPOL,stZTAR,stATAR
       real stSPIN
@@ -32,7 +32,7 @@
      +                stPHI,stPPHI,stTHETA,
      +                stIGEN,stNGEN,stNPRINT,stIRAD,
      +                stNCALL,stITMX1,stITMX2,stIDEBUG,
-     +                stNX,stNQ,stIPRO,stIORD,stNSET,stITFORM,
+     +                stNX,stNQ,stNT,stIPRO,stIORD,stNSET,stITFORM,
      +                stTWIST3,stFIXED,stTINTIN,stF2QCD,stDIPOLE,
      +                stYMIN,stYMAX,stM12MIN,stELMB,stEGMB,
      +                stPROSPLIT,

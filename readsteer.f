@@ -95,6 +95,7 @@ C --- Debug flag
 C --- Number of x & q2 points in the amplitudes grid
          CALL FFKEY('NXGRID',stNX,1,'INTEGER')
          CALL FFKEY('NQGRID',stNQ,1,'INTEGER')
+         CALL FFKEY('NTGRID',stNT,1,'INTEGER')
 
 C --- Process to generate
          CALL FFKEY('IPRO',stIPRO,1,'INTEGER')

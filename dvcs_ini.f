@@ -24,7 +24,7 @@
 
       logical Angle_Integ
       common/dvcs_IN/spin,Z,A,s,tchar,xlaml,xlamp,
-     >               Angle_Integ,iord,icount,nx,nq,IPRO
+     >               Angle_Integ,iord,icount,nx,nq,nt,IPRO
       common/dvcs_OUT/res
       common/dvcs_VAR/x_main,q_main,phi_main,t_main,ym_main
 
@@ -317,7 +317,7 @@ C     # of points in x and Q^2
 C
       nx = stNX
       nq = stNQ
-
+      nt = stNT
 
 C
 C     initializing flags

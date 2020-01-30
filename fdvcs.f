@@ -29,7 +29,7 @@ C ------------------------------------------------------
 
       logical Angle_Integ
       common/dvcs_IN/spin,Z,A,s,tchar,xlaml,xlamp,
-     >               Angle_Integ,iord,icount,nx,nq,IPRO
+     >               Angle_Integ,iord,icount,nx,nq,nt,IPRO
 
       common/dvcs_OUT/res
 
@@ -234,7 +234,7 @@ ccc      phi_newcalc_0 = 0.
 ccc      print *,phi_newcalc_0
  
 c-------------------------------------
-      call dvcsob(spin,Z,A,nx,nq,icount,xx,q,snew,t,phi,pphi,
+      call dvcsob(spin,Z,A,nx,nq,nt,icount,xx,q,snew,t,phi,pphi,
      >     theta,tchar,xlaml,xlamp,iord,res,phi_newcalc_0)
 cc      call dvcsob(spin,Z,A,nx,nq,icount,xx,q,snew,t,phi,pphi,
 cc     >     theta,tchar,xlaml,xlamp,iord,res) ! S. Fazio August 2010

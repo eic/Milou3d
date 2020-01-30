@@ -7,10 +7,10 @@ C     Read single file
       integer nx,nq,nt
       character(len=*) path
       logical isim
-      real, dimension(nx,nq,nt) :: arr 
+      real*8 arr(nx,nq,nt) 
 
       integer i,j,k
-      real*8 x,q,t
+      real*8 x,q2,t
       real*8 dum1,dum2
 
       open(unit=11,file=path,status='unknown')
@@ -19,7 +19,7 @@ C     Read single file
             read(11,*) x
 
          do i = 1, nq
-            read(11,*) q
+            read(11,*) q2
             
             do k = 1, nt
                 read(11,*) t,dum1,dum2

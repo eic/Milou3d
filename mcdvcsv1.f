@@ -4,7 +4,7 @@
 
 ****************************************************************
 *
-       subroutine dvcsob(spin2,Z1,A1,nx1,nq1,count,x,q,s,t,
+       subroutine dvcsob(spin2,Z1,A1,nx1,nq1,nt1,count,x,q,s,t,
      > phi,pphi,theta,ichar,laml,lamp,iord,results,phi_newcalc)
 *
 ****************************************************************
@@ -49,7 +49,7 @@ cls      implicit none
 C
 C     number of points in x and Q^2 in global grid
 C
-      integer nx,nq,nx1,nq1
+      integer nx,nq,nt,nx1,nq1,nt1
 C
 C     external counter variable to avoid repeated readin of amplitudes.
 C
@@ -98,9 +98,9 @@ C
 C
 C     arrays for zeta=x_bj and q
 C
-      integer mx,mq
-      parameter(mx=100,mq=100)
-      real*8 xx(mx), qq(mq)
+      integer mx,mq,mt
+      parameter(mx=100,mq=100,mt=100)
+      real*8 xx(mx), qq(mq), tt(mt)
 C
 C     Definition of the various contributions to the diff. Xsection from DVCS,
 C     interference and BH
@@ -169,7 +169,7 @@ C
 C     x and Q^2 arrays
 C
 
-       common /kins/ xx,qq
+       common /kins/ xx,qq,tt
 
 C
 C     kinematical variables
@@ -179,7 +179,7 @@ C
 C
 C     # of x and Q^2
 C
-      common /counter/ nx,nq
+      common /counter/ nx,nq,nt
 
 C
 C     external functions
@@ -245,6 +245,7 @@ C
 
             nx = nx1
             nq = nq1
+            nt = nt1
 
 C
 C     adjust del for nuclear number A
@@ -271,7 +272,7 @@ C
 
       if (count.eq.1) then
 
-      call readin(iord,nx,nq)
+      call readin(iord,nx,nq,nt)
 
 ccc      if (A.gt.1D0) then
 ccc         call readtdep(A)
@@ -1144,7 +1145,7 @@ C
             integer nx,nq,nt
             character(len=*) path
             logical isim
-            real, dimension(nx,nq,nt) :: arr 
+            real*8 arr(nx,nq,nt)
         end function
       end interface
 
@@ -1563,7 +1564,7 @@ C
       integer i,j,n1,n2
       real*8 t
       integer iord
-      parameter(mx=100,mq=100)
+      parameter(mx=100,mq=100,mt=100)
       real*8 resu,resd,ress,resg,resu1,resd1,ress1,resg1,erru
       real*8 resue,resde,resse,resge,resu1e,resd1e,ress1e,resg1e
       real*8 resup,resdp,ressp,resgp,resu1p,resd1p,ress1p,resg1p
@@ -1578,20 +1579,22 @@ C
       real*8 f1s,f2s
       real*8 g1,g1sea,gpi,exg
       common /form1/ f1u,f1d,f1s,exg,f2u,f2d,f2s,g1,g1sea,gpi
-      integer nx,nq
-      common /counter/ nx,nq
+      integer nx,nq,nt
+      common /counter/ nx,nq,nt
       integer icountxq,icountt
       common /counter1/ icountxq,icountt
-      real*8 xx(mx),qq(mq)
-      common /kins/ xx,qq
-      real*8 reu(mx,mq),imu(mx,mq),red(mx,mq),imd(mx,mq)
-      real*8 res(mx,mq),ims(mx,mq),reg(mx,mq),img(mx,mq)
-      real*8 reup(mx,mq),imup(mx,mq),redp(mx,mq),imdp(mx,mq)
-      real*8 resp(mx,mq),imsp(mx,mq),regp(mx,mq),imgp(mx,mq)
-      real*8 reue(mx,mq),imue(mx,mq),rede(mx,mq),imde(mx,mq)
-      real*8 rese(mx,mq),imse(mx,mq),rege(mx,mq),imge(mx,mq)
-      real*8 reuep(mx,mq),imuep(mx,mq),redep(mx,mq),imdep(mx,mq)
-      real*8 resep(mx,mq),imsep(mx,mq),regep(mx,mq),imgep(mx,mq)
+      real*8 xx(mx),qq(mq),tt(mt)
+      common /kins/ xx,qq,tt
+      real*8 reu(mx,mq,mt),imu(mx,mq,mt),red(mx,mq,mt),imd(mx,mq,mt)
+      real*8 res(mx,mq,mt),ims(mx,mq,mt),reg(mx,mq,mt),img(mx,mq,mt)
+      real*8 reup(mx,mq,mt),imup(mx,mq,mt),redp(mx,mq,mt),imdp(mx,mq,mt)
+      real*8 resp(mx,mq,mt),imsp(mx,mq,mt),regp(mx,mq,mt),imgp(mx,mq,mt)
+      real*8 reue(mx,mq,mt),imue(mx,mq,mt),rede(mx,mq,mt),imde(mx,mq,mt)
+      real*8 rese(mx,mq,mt),imse(mx,mq,mt),rege(mx,mq,mt),imge(mx,mq,mt)
+      real*8 reuep(mx,mq,mt),imuep(mx,mq,mt),redep(mx,mq,mt),
+     > imdep(mx,mq,mt)
+      real*8 resep(mx,mq,mt),imsep(mx,mq,mt),regep(mx,mq,mt),
+     > imgep(mx,mq,mt)
       real*8 y,tmin,testt,del,qsq,ep1,kfac,A,Z,mp,spin1
 
       common /req/ y,tmin,testt,del,qsq,ep1,kfac,A,Z,mp,spin1
@@ -1629,6 +1632,21 @@ C
 
       external forms, amptw3
 
+      interface
+        function interpolate3D(nx,nq,nt,xx,qq,tt,x,q2,t,arr) result(amp)
+            integer mx,mq,mt
+            parameter(mx=100,mq=100,mt=100)
+            integer nx,nq,nt
+            real*8 xx(mx)
+            real*8 qq(mq)
+            real*8 tt(mt)
+            real*8 x,q2,t
+            real*8 arr(mx,mq,mt)
+
+            real*8 amp
+        end function
+      end interface
+
       if (iord.eq.1) then
 
             sw = 0.0
@@ -1662,16 +1680,16 @@ C
 
          if (icountxq.eq.1) then
 
-       call polin2(xx,qq,reu,nx,nq,delt,qsq,resu,erru)
-       call polin2(xx,qq,red,nx,nq,delt,qsq,resd,erru)
-       call polin2(xx,qq,res,nx,nq,delt,qsq,ress,erru)
-       call polin2(xx,qq,imu,nx,nq,delt,qsq,resu1,erru)
-       call polin2(xx,qq,imd,nx,nq,delt,qsq,resd1,erru)
-       call polin2(xx,qq,ims,nx,nq,delt,qsq,ress1,erru)
+            resu = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reu)
+            resd = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,red)
+            ress = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,res)
+            resu1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imu)
+            resd1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imd)
+            ress1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,ims)
 
             if (iord.eq.2) then
-              call polin2(xx,qq,reg,nx,nq,delt,qsq,resg,erru)
-              call polin2(xx,qq,img,nx,nq,delt,qsq,resg1,erru)
+             resg = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reg)
+             resg1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,img)
             endif
 
          endif
@@ -1690,22 +1708,16 @@ CLS ICI1
 
         if (icountxq.eq.1) then
 
-       call polin2(xx,qq,reu,nx,nq,delt,qsq,resu,erru)
-c       print *,"1",icountxq,testt,delt,qsq,resu,erru
-       call polin2(xx,qq,red,nx,nq,delt,qsq,resd,erru)
-c       print *,"1",icountxq,testt,delt,qsq,resd,erru
-       call polin2(xx,qq,res,nx,nq,delt,qsq,ress,erru)
-c       print *,"1",icountxq,testt,delt,qsq,ress,erru
-       call polin2(xx,qq,imu,nx,nq,delt,qsq,resu1,erru)
-c       print *,"1",icountxq,testt,delt,qsq,resu1,erru
-       call polin2(xx,qq,imd,nx,nq,delt,qsq,resd1,erru)
-c       print *,"1",icountxq,testt,delt,qsq,resd1,erru
-       call polin2(xx,qq,ims,nx,nq,delt,qsq,ress1,erru)
-c       print *,"1",icountxq,testt,delt,qsq,ress1,erru
+            resu = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reu)
+            resd = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,red)
+            ress = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,res)
+            resu1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imu)
+            resd1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imd)
+            ress1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,ims)
 
             if (iord.eq.2) then
-              call polin2(xx,qq,reg,nx,nq,delt,qsq,resg,erru)
-              call polin2(xx,qq,img,nx,nq,delt,qsq,resg1,erru)
+             resg = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reg)
+             resg1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,img)
             endif
 
          endif
@@ -1721,22 +1733,16 @@ c       print *,"1",icountxq,testt,delt,qsq,ress1,erru
 
       if (icountxq.eq.1) then
 
-       call polin2(xx,qq,reue,nx,nq,delt,qsq,resue,erru)
-c       print *,"2",icountxq,testt,delt,qsq,resue,erru
-       call polin2(xx,qq,rede,nx,nq,delt,qsq,resde,erru)
-c       print *,"2",icountxq,testt,delt,qsq,resde,erru
-       call polin2(xx,qq,rese,nx,nq,delt,qsq,resse,erru)
-c       print *,"2",icountxq,testt,delt,qsq,resse,erru
-       call polin2(xx,qq,imue,nx,nq,delt,qsq,resu1e,erru)
-c       print *,"2",icountxq,testt,delt,qsq,resu1e,erru
-       call polin2(xx,qq,imde,nx,nq,delt,qsq,resd1e,erru)
-c       print *,"2",icountxq,testt,delt,qsq,resd1e,erru
-       call polin2(xx,qq,imse,nx,nq,delt,qsq,ress1e,erru)
-c       print *,"2",icountxq,testt,delt,qsq,ress1e,erru
+            resue = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reue)
+            resde = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,rede)
+            resse = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,rese)
+            resu1e = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imue)
+            resd1e = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imde)
+            ress1e = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imse)
 
             if (iord.eq.2) then
-              call polin2(xx,qq,rege,nx,nq,delt,qsq,resge,erru)
-              call polin2(xx,qq,imge,nx,nq,delt,qsq,resg1e,erru)
+             resge = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,rege)
+             resg1e = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imge)
             endif
 
          endif
@@ -1748,21 +1754,16 @@ c       print *,"2",icountxq,testt,delt,qsq,ress1e,erru
 
       if (icountxq.eq.1) then
 
-       call polin2(xx,qq,reup,nx,nq,delt,qsq,resup,erru)
-c       print *,"3",icountxq,testt,delt,qsq,resup,erru
-       call polin2(xx,qq,redp,nx,nq,delt,qsq,resdp,erru)
-c       print *,"3",icountxq,testt,delt,qsq,resdp,erru
-       call polin2(xx,qq,resp,nx,nq,delt,qsq,ressp,erru)
-c       print *,"3",icountxq,testt,delt,qsq,ressp,erru
-       call polin2(xx,qq,imup,nx,nq,delt,qsq,resu1p,erru)
-c       print *,"3",icountxq,testt,delt,qsq,resu1p,erru
-       call polin2(xx,qq,imdp,nx,nq,delt,qsq,resd1p,erru)
-c       print *,"3",icountxq,testt,delt,qsq,resd1p,erru
-       call polin2(xx,qq,imsp,nx,nq,delt,qsq,ress1p,erru)
-c       print *,"3",icountxq,testt,delt,qsq,ress1p,erru
+            resup = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reup)
+            resdp = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redp)
+            ressp = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,resp)
+            resu1p = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imup)
+            resd1p = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdp)
+            ress1p = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imsp)
+
             if (iord.eq.2) then
-              call polin2(xx,qq,regp,nx,nq,delt,qsq,resgp,erru)
-              call polin2(xx,qq,imgp,nx,nq,delt,qsq,resg1p,erru)
+             resgp = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,regp)
+             resg1p = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imgp)
             endif
 
          endif
@@ -1774,22 +1775,16 @@ c       print *,"3",icountxq,testt,delt,qsq,ress1p,erru
 
       if (icountxq.eq.1) then
 
-       call polin2(xx,qq,reuep,nx,nq,delt,qsq,resupe,erru)
-c        print *,"4",icountxq,testt,delt,qsq,resupe,erru
-       call polin2(xx,qq,redep,nx,nq,delt,qsq,resdpe,erru)
-c       print *,"4",icountxq,testt,delt,qsq,resdpe,erru
-       call polin2(xx,qq,resep,nx,nq,delt,qsq,resspe,erru)
-c       print *,"4",icountxq,testt,delt,qsq,resspe,erru
-       call polin2(xx,qq,imuep,nx,nq,delt,qsq,resu1pe,erru)
-c       print *,"4",icountxq,testt,delt,qsq,resu1pe,erru
-       call polin2(xx,qq,imdep,nx,nq,delt,qsq,resd1pe,erru)
-c       print *,"4",icountxq,testt,delt,qsq,resd1pe,erru
-       call polin2(xx,qq,imsep,nx,nq,delt,qsq,ress1pe,erru)
-c       print *,"4",icountxq,testt,delt,qsq,ress1pe,erru
+            resupe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reuep)
+            resdpe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redep)
+            resspe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,resep)
+            resu1pe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imuep)
+            resd1pe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdep)
+            ress1pe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imsep)
 
             if (iord.eq.2) then
-              call polin2(xx,qq,regep,nx,nq,delt,qsq,resgpe,erru)
-              call polin2(xx,qq,imgep,nx,nq,delt,qsq,resg1pe,erru)
+             resgpe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,regep)
+             resg1pe = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imgep)
             endif
 
          endif
@@ -1862,16 +1857,16 @@ C
 ****************************************************************
 
       integer i,j,mx,mq
-      parameter(mx=100,mq=100)
+      parameter(mx=100,mq=100,mt=100)
       real*8 mp,delt
       real*8 y,tmin,testt,del,qsq,ep1,kfac,t,A,Z,spin1
       common /req/ y,tmin,testt,del,qsq,ep1,kfac,A,Z,mp,spin1
-      integer nx,nq
-      common /counter/nx,nq
+      integer nx,nq,nt
+      common /counter/ nx,nq,nt
       integer icountxq,icountt
       common /counter1/ icountxq,icountt
-      real*8 xx(mx),qq(mq)
-      common /kins/ xx,qq
+      real*8 xx(mx),qq(mq),tt(mt)
+      common /kins/ xx,qq,tt
       real*8 resuh,resdh,ressh,resu1h,resd1h,ress1h,erru
       real*8 resu2h,resd2h,ress2h,resu3h,resd3h,ress3h
       real*8 resu4,resd4,ress4,resu5,resd5,ress5
@@ -1893,37 +1888,43 @@ C
      > resu2e1,resd2e1,ress2e1,resu3e1,resd3e1,ress3e1,
      > resuet,resdet,resset,resu1et,resd1et,ress1et,
      > resu2et,resd2et,ress2et,resu3et,resd3et,ress3et
-      real*8 reut3(mx,mq),imut3(mx,mq),redt3(mx,mq)
-      real*8 rest3(mx,mq),imst3(mx,mq),imdt3(mx,mq)
-      real*8 reupt3(mx,mq),imupt3(mx,mq),redpt3(mx,mq)
-      real*8 respt3(mx,mq),imspt3(mx,mq),imdpt3(mx,mq)
-      real*8 reuet3(mx,mq),imuet3(mx,mq),redet3(mx,mq)
-      real*8 reset3(mx,mq),imset3(mx,mq),imdet3(mx,mq)
-      real*8 reuept3(mx,mq),imuept3(mx,mq),redept3(mx,mq)
-      real*8 resept3(mx,mq),imsept3(mx,mq),imdept3(mx,mq)
+      real*8 reut3(mx,mq,mt),imut3(mx,mq,mt),redt3(mx,mq,mt)
+      real*8 rest3(mx,mq,mt),imst3(mx,mq,mt),imdt3(mx,mq,mt)
+      real*8 reupt3(mx,mq,mt),imupt3(mx,mq,mt),redpt3(mx,mq,mt)
+      real*8 respt3(mx,mq,mt),imspt3(mx,mq,mt),imdpt3(mx,mq,mt)
+      real*8 reuet3(mx,mq,mt),imuet3(mx,mq,mt),redet3(mx,mq,mt)
+      real*8 reset3(mx,mq,mt),imset3(mx,mq,mt),imdet3(mx,mq,mt)
+      real*8 reuept3(mx,mq,mt),imuept3(mx,mq,mt),redept3(mx,mq,mt)
+      real*8 resept3(mx,mq,mt),imsept3(mx,mq,mt),imdept3(mx,mq,mt)
 
-      real*8 reut3d(mx,mq),imut3d(mx,mq),redt3d(mx,mq)
-      real*8 rest3d(mx,mq),imst3d(mx,mq),imdt3d(mx,mq)
-      real*8 reupt3d(mx,mq),imupt3d(mx,mq),redpt3d(mx,mq)
-      real*8 respt3d(mx,mq),imspt3d(mx,mq),imdpt3d(mx,mq)
-      real*8 reuet3d(mx,mq),imuet3d(mx,mq),redet3d(mx,mq)
-      real*8 reset3d(mx,mq),imset3d(mx,mq),imdet3d(mx,mq)
-      real*8 reuept3d(mx,mq),imuept3d(mx,mq),redept3d(mx,mq)
-      real*8 resept3d(mx,mq),imsept3d(mx,mq),imdept3d(mx,mq)
+      real*8 reut3d(mx,mq,mt),imut3d(mx,mq,mt),redt3d(mx,mq,mt)
+      real*8 rest3d(mx,mq,mt),imst3d(mx,mq,mt),imdt3d(mx,mq,mt)
+      real*8 reupt3d(mx,mq,mt),imupt3d(mx,mq,mt),redpt3d(mx,mq,mt)
+      real*8 respt3d(mx,mq,mt),imspt3d(mx,mq,mt),imdpt3d(mx,mq,mt)
+      real*8 reuet3d(mx,mq,mt),imuet3d(mx,mq,mt),redet3d(mx,mq,mt)
+      real*8 reset3d(mx,mq,mt),imset3d(mx,mq,mt),imdet3d(mx,mq,mt)
+      real*8 reuept3d(mx,mq,mt),imuept3d(mx,mq,mt),redept3d(mx,mq,mt)
+      real*8 resept3d(mx,mq,mt),imsept3d(mx,mq,mt),imdept3d(mx,mq,mt)
 
       real*8 reutw3,imutw3,redtw3,imdtw3,restw3,imstw3
      >  ,reuptw3,imuptw3,redptw3,imdptw3,resptw3,imsptw3
      >  ,reuetw3,imuetw3,redetw3,imdetw3,resetw3,imsetw3
      >  ,reueptw3,imueptw3,redeptw3,imdeptw3,reseptw3,imseptw3
 
-      real*8 reul(mx,mq),imul(mx,mq),redl(mx,mq),imdl(mx,mq)
-      real*8 resl(mx,mq),imsl(mx,mq),regl(mx,mq),imgl(mx,mq)
-      real*8 reupl(mx,mq),imupl(mx,mq),redpl(mx,mq),imdpl(mx,mq)
-      real*8 respl(mx,mq),imspl(mx,mq),regpl(mx,mq),imgpl(mx,mq)
-      real*8 reuel(mx,mq),imuel(mx,mq),redel(mx,mq),imdel(mx,mq)
-      real*8 resel(mx,mq),imsel(mx,mq),regel(mx,mq),imgel(mx,mq)
-      real*8 reuepl(mx,mq),imuepl(mx,mq),redepl(mx,mq),imdepl(mx,mq)
-      real*8 resepl(mx,mq),imsepl(mx,mq),regepl(mx,mq),imgepl(mx,mq)
+      real*8 reul(mx,mq,mt),imul(mx,mq,mt),redl(mx,mq,mt),imdl(mx,mq,mt)
+      real*8 resl(mx,mq,mt),imsl(mx,mq,mt),regl(mx,mq,mt),imgl(mx,mq,mt)
+      real*8 reupl(mx,mq,mt),imupl(mx,mq,mt),redpl(mx,mq,mt),
+     > imdpl(mx,mq,mt)
+      real*8 respl(mx,mq,mt),imspl(mx,mq,mt),regpl(mx,mq,mt),
+     > imgpl(mx,mq,mt)
+      real*8 reuel(mx,mq,mt),imuel(mx,mq,mt),redel(mx,mq,mt),
+     > imdel(mx,mq,mt)
+      real*8 resel(mx,mq,mt),imsel(mx,mq,mt),regel(mx,mq,mt),
+     > imgel(mx,mq,mt)
+      real*8 reuepl(mx,mq,mt),imuepl(mx,mq,mt),redepl(mx,mq,mt),
+     > imdepl(mx,mq,mt)
+      real*8 resepl(mx,mq,mt),imsepl(mx,mq,mt),regepl(mx,mq,mt),
+     > imgepl(mx,mq,mt)
 
       common /ampsn/reul,imul,redl,imdl,resl,imsl,regl,imgl,reupl,imupl,
      > redpl,imdpl,respl,imspl,regpl,imgpl,reuel,imuel,redel,imdel,resel
@@ -1992,19 +1993,19 @@ C
 
          if (icountxq.eq.1) then
 
-       call polin2(xx,qq,reul,nx,nq,delt,qsq,resuh,erru)
-       call polin2(xx,qq,redl,nx,nq,delt,qsq,resdh,erru)
-       call polin2(xx,qq,resl,nx,nq,delt,qsq,ressh,erru)
-       call polin2(xx,qq,imul,nx,nq,delt,qsq,resu1h,erru)
-       call polin2(xx,qq,imdl,nx,nq,delt,qsq,resd1h,erru)
-       call polin2(xx,qq,imsl,nx,nq,delt,qsq,ress1h,erru)
+            resuh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reul)
+            resdh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redl)
+            ressh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,resl)
+            resu1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imul)
+            resd1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdl)
+            ress1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imsl)
 
-       call polin2(xx,qq,reut3d,nx,nq,delt,qsq,resu2h,erru)
-       call polin2(xx,qq,redt3d,nx,nq,delt,qsq,resd2h,erru)
-       call polin2(xx,qq,rest3d,nx,nq,delt,qsq,ress2h,erru)
-       call polin2(xx,qq,imut3d,nx,nq,delt,qsq,resu3h,erru)
-       call polin2(xx,qq,imdt3d,nx,nq,delt,qsq,resd3h,erru)
-       call polin2(xx,qq,imst3d,nx,nq,delt,qsq,ress3h,erru)
+            resu2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reut3d)
+            resd2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redt3d)
+            ress2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,rest3d)
+            resu3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imut3d)
+            resd3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdt3d)
+            ress3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imst3d)
 
          endif
 
@@ -2039,71 +2040,40 @@ C
 
          if (icountxq.eq.1) then
 
-       call polin2(xx,qq,reul,nx,nq,delt,qsq,resuh,erru)
-c      print *,"test",icountxq,testt,delt,qsq,resuh,erru
-c      read(*,*)
-       call polin2(xx,qq,redl,nx,nq,delt,qsq,resdh,erru)
-c      print *,"test",icountxq,testt,delt,qsq,resdh,erru
-       call polin2(xx,qq,resl,nx,nq,delt,qsq,ressh,erru)
-c      print *,"test",icountxq,testt,delt,qsq,ressh,erru
-       call polin2(xx,qq,imul,nx,nq,delt,qsq,resu1h,erru)
-c      print *,"test",icountxq,testt,delt,qsq,resu1h,erru
-       call polin2(xx,qq,imdl,nx,nq,delt,qsq,resd1h,erru)
-c      print *,"test",icountxq,testt,delt,qsq,resd1h,erru
-       call polin2(xx,qq,imsl,nx,nq,delt,qsq,ress1h,erru)
-c      print *,"test",icountxq,testt,delt,qsq,ress1h,erru
+            resuh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reul)
+            resdh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redl)
+            ressh = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,resl)
+            resu1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imul)
+            resd1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdl)
+            ress1h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imsl)
 
-       call polin2(xx,qq,reut3d,nx,nq,delt,qsq,resu2h,erru)
-c      print *,"test1",icountxq,testt,delt,qsq,resu2h,erru
-       call polin2(xx,qq,redt3d,nx,nq,delt,qsq,resd2h,erru)
-c      print *,"test1",icountxq,testt,delt,qsq,resd2h,erru
-       call polin2(xx,qq,rest3d,nx,nq,delt,qsq,ress2h,erru)
-c      print *,"test1",icountxq,testt,delt,qsq,ress2h,erru
-       call polin2(xx,qq,imut3d,nx,nq,delt,qsq,resu3h,erru)
-c      print *,"test1",icountxq,testt,delt,qsq,resu3h,erru
-       call polin2(xx,qq,imdt3d,nx,nq,delt,qsq,resd3h,erru)
-c      print *,"test1",icountxq,testt,delt,qsq,resd3h,erru
-       call polin2(xx,qq,imst3d,nx,nq,delt,qsq,ress3h,erru)
-c      print *,"test1",icountxq,testt,delt,qsq,ress3h,erru
+            resu2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reut3d)
+            resd2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redt3d)
+            ress2h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,rest3d)
+            resu3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imut3d)
+            resd3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdt3d)
+            ress3h = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imst3d)
 
-       call polin2(xx,qq,reut3,nx,nq,delt,qsq,resu4,erru)
-c      print *,"test2",icountxq,testt,delt,qsq,resu4,erru
-       call polin2(xx,qq,redt3,nx,nq,delt,qsq,resd4,erru)
-c      print *,"test2",icountxq,testt,delt,qsq,resd4,erru
-       call polin2(xx,qq,rest3,nx,nq,delt,qsq,ress4,erru)
-c      print *,"test2",icountxq,testt,delt,qsq,ress4,erru
-       call polin2(xx,qq,imut3,nx,nq,delt,qsq,resu5,erru)
-c      print *,"test2",icountxq,testt,delt,qsq,resu5,erru
-       call polin2(xx,qq,imdt3,nx,nq,delt,qsq,resd5,erru)
-c      print *,"test2",icountxq,testt,delt,qsq,resd5,erru
-       call polin2(xx,qq,imst3,nx,nq,delt,qsq,ress5,erru)
-c      print *,"test2",icountxq,testt,delt,qsq,ress5,erru
+            resu4 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reut3)
+            resd4 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redt3)
+            ress4 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,rest3)
+            resu5 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imut3)
+            resd5 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdt3)
+            ress5 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imst3)
 
-       call polin2(xx,qq,reuet3,nx,nq,delt,qsq,resu6,erru)
-c      print *,"test3",icountxq,testt,delt,qsq,resu6,erru
-       call polin2(xx,qq,redet3,nx,nq,delt,qsq,resd6,erru)
-c      print *,"test3",icountxq,testt,delt,qsq,resd6,erru
-       call polin2(xx,qq,reset3,nx,nq,delt,qsq,ress6,erru)
-c      print *,"test3",icountxq,testt,delt,qsq,ress6,erru
-       call polin2(xx,qq,imuet3,nx,nq,delt,qsq,resu7,erru)
-c      print *,"test3",icountxq,testt,delt,qsq,resu7,erru
-       call polin2(xx,qq,imdet3,nx,nq,delt,qsq,resd7,erru)
-c      print *,"test3",icountxq,testt,delt,qsq,resd7,erru
-       call polin2(xx,qq,imset3,nx,nq,delt,qsq,ress7,erru)
-c      print *,"test3",icountxq,testt,delt,qsq,ress7,erru
+            resu6 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reuet3)
+            resd6 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redet3)
+            ress6 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reset3)
+            resu7 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imuet3)
+            resd7 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdet3)
+            ress7 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imset3)
 
-       call polin2(xx,qq,reupt3,nx,nq,delt,qsq,resu8,erru)
-c      print *,"test4",icountxq,testt,delt,qsq,resu8,erru
-       call polin2(xx,qq,redpt3,nx,nq,delt,qsq,resd8,erru)
-c      print *,"test4",icountxq,testt,delt,qsq,resd8,erru
-       call polin2(xx,qq,respt3,nx,nq,delt,qsq,ress8,erru)
-c      print *,"test4",icountxq,testt,delt,qsq,ress8,erru
-       call polin2(xx,qq,imupt3,nx,nq,delt,qsq,resu9,erru)
-c      print *,"test4",icountxq,testt,delt,qsq,resu9,erru
-       call polin2(xx,qq,imdpt3,nx,nq,delt,qsq,resd9,erru)
-c      print *,"test4",icountxq,testt,delt,qsq,resd9,erru
-       call polin2(xx,qq,imspt3,nx,nq,delt,qsq,ress9,erru)
-c      print *,"test4",icountxq,testt,delt,qsq,ress9,erru
+            resu8 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reupt3)
+            resd8 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redpt3)
+            ress8 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,respt3)
+            resu9 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imupt3)
+            resd9 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdpt3)
+            ress9 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imspt3)
 
          endif
 
@@ -2138,31 +2108,20 @@ C
 
        if (icountxq.eq.1) then
 
-       call polin2(xx,qq,reuel,nx,nq,delt,qsq,resue1,erru)
-c      print *,"test9",icountxq,testt,delt,qsq,resue1,erru
-       call polin2(xx,qq,redel,nx,nq,delt,qsq,resde1,erru)
-c      print *,"test9",icountxq,testt,delt,qsq,resde1,erru
-       call polin2(xx,qq,resel,nx,nq,delt,qsq,resse1,erru)
-c      print *,"test9",icountxq,testt,delt,qsq,resse1,erru
-       call polin2(xx,qq,imuel,nx,nq,delt,qsq,resu1e1,erru)
-c      print *,"test9",icountxq,testt,delt,qsq,resu1e1,erru
-       call polin2(xx,qq,imdel,nx,nq,delt,qsq,resd1e1,erru)
-c      print *,"test9",icountxq,testt,delt,qsq,resd1e1,erru
-       call polin2(xx,qq,imsel,nx,nq,delt,qsq,ress1e1,erru)
-c      print *,"test9",icountxq,testt,delt,qsq,ress1e1,erru
+           resue1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reuel)
+           resde1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redel)
+           resse1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,resel)
+           resu1e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imuel)
+           resd1e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdel)
+           ress1e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imsel)
 
-       call polin2(xx,qq,reuet3d,nx,nq,delt,qsq,resu2e1,erru)
-c      print *,"test10",icountxq,testt,delt,qsq,resu2e1,erru
-       call polin2(xx,qq,redet3d,nx,nq,delt,qsq,resd2e1,erru)
-c      print *,"test10",icountxq,testt,delt,qsq,resd2e1,erru
-       call polin2(xx,qq,reset3d,nx,nq,delt,qsq,ress2e1,erru)
-c      print *,"test10",icountxq,testt,delt,qsq,ress2e1,erru
-       call polin2(xx,qq,imuet3d,nx,nq,delt,qsq,resu3e1,erru)
-c      print *,"test10",icountxq,testt,delt,qsq,resu3e1,erru
-       call polin2(xx,qq,imdet3d,nx,nq,delt,qsq,resd3e1,erru)
-c      print *,"test10",icountxq,testt,delt,qsq,resd3e1,erru
-       call polin2(xx,qq,imset3d,nx,nq,delt,qsq,ress3e1,erru)
-c      print *,"test10",icountxq,testt,delt,qsq,ress3e1,erru
+
+           resu2e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reuet3d)
+           resd2e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redet3d)
+           ress2e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reset3d)
+           resu3e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imuet3d)
+           resd3e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdet3d)
+           ress3e1 = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imset3d)
 
        endif
 
@@ -2198,32 +2157,19 @@ C
 
       if (icountxq.eq.1) then
 
-       call polin2(xx,qq,reupl,nx,nq,delt,qsq,resuht,erru)
-c      print *,"test5",icountxq,testt,delt,qsq,resuht,erru
-c      print *,reupl
-       call polin2(xx,qq,redpl,nx,nq,delt,qsq,resdht,erru)
-c      print *,"test5",icountxq,testt,delt,qsq,resdht,erru
-       call polin2(xx,qq,respl,nx,nq,delt,qsq,ressht,erru)
-c      print *,"test5",icountxq,testt,delt,qsq,ressht,erru
-       call polin2(xx,qq,imupl,nx,nq,delt,qsq,resu1ht,erru)
-c      print *,"test5",icountxq,testt,delt,qsq,resu1ht,erru
-       call polin2(xx,qq,imdpl,nx,nq,delt,qsq,resd1ht,erru)
-c      print *,"test5",icountxq,testt,delt,qsq,resd1ht,erru
-       call polin2(xx,qq,imspl,nx,nq,delt,qsq,ress1ht,erru)
-c      print *,"test5",icountxq,testt,delt,qsq,ress1ht,erru
+           resuht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reupl)
+           resdht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redpl)
+           ressht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,respl)
+           resu1ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imupl)
+           resd1ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdpl)
+           ress1ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imspl)
 
-       call polin2(xx,qq,reupt3d,nx,nq,delt,qsq,resu2ht,erru)
-c      print *,"test6",icountxq,testt,delt,qsq,resu2ht,erru
-       call polin2(xx,qq,redpt3d,nx,nq,delt,qsq,resd2ht,erru)
-c      print *,"test6",icountxq,testt,delt,qsq,resd2ht,erru
-       call polin2(xx,qq,respt3d,nx,nq,delt,qsq,ress2ht,erru)
-c      print *,"test6",icountxq,testt,delt,qsq,ress2ht,erru
-       call polin2(xx,qq,imupt3d,nx,nq,delt,qsq,resu3ht,erru)
-c      print *,"test6",icountxq,testt,delt,qsq,resu3ht,erru
-       call polin2(xx,qq,imdpt3d,nx,nq,delt,qsq,resd3ht,erru)
-c      print *,"test6",icountxq,testt,delt,qsq,resd3ht,erru
-       call polin2(xx,qq,imspt3d,nx,nq,delt,qsq,ress3ht,erru)
-c      print *,"test6",icountxq,testt,delt,qsq,ress3ht,erru
+           resu2ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reupt3d)
+           resd2ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redpt3d)
+           ress2ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,respt3d)
+           resu3ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imupt3d)
+           resd3ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdpt3d)
+           ress3ht = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imspt3d)
 
        endif
 
@@ -2259,31 +2205,19 @@ C
 
       if (icountxq.eq.1) then
 
-       call polin2(xx,qq,reuepl,nx,nq,delt,qsq,resuet,erru)
-c      print *,"test7",icountxq,testt,delt,qsq,resuet,erru
-       call polin2(xx,qq,redepl,nx,nq,delt,qsq,resdet,erru)
-c      print *,"test7",icountxq,testt,delt,qsq,resdet,erru
-       call polin2(xx,qq,resepl,nx,nq,delt,qsq,resset,erru)
-c      print *,"test7",icountxq,testt,delt,qsq,resset,erru
-       call polin2(xx,qq,imuepl,nx,nq,delt,qsq,resu1et,erru)
-c      print *,"test7",icountxq,testt,delt,qsq,resu1et,erru
-       call polin2(xx,qq,imdepl,nx,nq,delt,qsq,resd1et,erru)
-c      print *,"test7",icountxq,testt,delt,qsq,resd1et,erru
-       call polin2(xx,qq,imsepl,nx,nq,delt,qsq,ress1et,erru)
-c      print *,"test7",icountxq,testt,delt,qsq,ress1et,erru
+          resuet = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reuepl)
+          resdet = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redepl)
+          resset = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,resepl)
+          resu1et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imuepl)
+          resd1et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdepl)
+          ress1et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imsepl)
 
-       call polin2(xx,qq,reuept3d,nx,nq,delt,qsq,resu2et,erru)
-c      print *,"test8",icountxq,testt,delt,qsq,resu2et,erru
-       call polin2(xx,qq,redept3d,nx,nq,delt,qsq,resd2et,erru)
-c      print *,"test8",icountxq,testt,delt,qsq,resd2et,erru
-       call polin2(xx,qq,resept3d,nx,nq,delt,qsq,ress2et,erru)
-c      print *,"test8",icountxq,testt,delt,qsq,ress2et,erru
-       call polin2(xx,qq,imuept3d,nx,nq,delt,qsq,resu3et,erru)
-c      print *,"test8",icountxq,testt,delt,qsq,resu3et,erru
-       call polin2(xx,qq,imdept3d,nx,nq,delt,qsq,resd3et,erru)
-c      print *,"test8",icountxq,testt,delt,qsq,resd3et,erru
-       call polin2(xx,qq,imsept3d,nx,nq,delt,qsq,ress3et,erru)
-c      print *,"test8",icountxq,testt,delt,qsq,ress3et,erru
+          resu2et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,reuept3d)
+          resd2et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,redept3d)
+          ress2et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,resept3d)
+          resu3et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imuept3d)
+          resd3et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imdept3d)
+          ress3et = interpolate3D(nx,nq,nt,xx,qq,tt,delt,qsq,t,imsept3d)
        endif
 
       reueptw3 = resuet + resu2et + ((2D0*mp**2*del)/
