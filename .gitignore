@@ -1,0 +1,8 @@
+*.o
+*.ntp
+*.out
+fort.*
+ascii.txt
+bases.data
+libbases.a
+milou
