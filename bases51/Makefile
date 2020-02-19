@@ -5,7 +5,7 @@ BITS = 32
 
 #F_COMP = g77
 #F_COMP = gfortran41
-F_COMP = gfortran43
+F_COMP = gfortran
 
 #F_FLAGS = -m$(BITS) -g -fno-automatic -fdollar-ok -fno-backslash -finit-local-zero -fno-second-underscore -fugly-logint -ftypeless-boz # for use with g77
 #F_FLAGS = -m$(BITS) -g -fno-automatic -fdollar-ok -fno-backslash -fno-second-underscore # For use with gfortran41
