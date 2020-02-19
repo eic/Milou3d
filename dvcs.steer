@@ -120,6 +120,7 @@ C --- Number of x & q2 points in the amplitudes grid
 C
 NXGRID 58
 NQGRID 40
+NTGRID 1
 C
 C --- Process to generate
 C ipro = 1 : BH
@@ -177,7 +178,7 @@ TWIST3  FALSE
 C
 C --- Parameters for t-dependence (see code)
 C
-ITFORM   0
+ITFORM   8
 c BQCST    7.00
 c BQCST    5.45
 BQCST    5.50
