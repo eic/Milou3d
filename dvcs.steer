@@ -120,7 +120,7 @@ C --- Number of x & q2 points in the amplitudes grid
 C
 NXGRID 58
 NQGRID 40
-NTGRID 1
+NTGRID 40 
 C
 C --- Process to generate
 C ipro = 1 : BH
@@ -136,7 +136,7 @@ C --- ORDER : LO or NLO
 C       IORD = 1 : LO
 C       IORD = 2 : NLO
 C
-IORD  2
+IORD  1
 C
 C --- Kinematic domain
 C      TMIN and TMAX are in GeV^2, negative
