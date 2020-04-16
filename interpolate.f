@@ -26,8 +26,8 @@
 
 C POINT
 
-      point(1) = x
-      point(2) = q2
+      point(1) = LOG10(x)
+      point(2) = LOG10(q2)
       point(3) = t
 
 C SIZE
@@ -39,11 +39,11 @@ C SIZE
 C GRID
 
       do i = 1, nx
-        grid(i) = xx(i) 
+        grid(i) = LOG10(xx(i)) 
       enddo
 
       do j = 1, nq
-        grid(nx+j) = qq(j) 
+        grid(nx+j) = LOG10(qq(j)) 
       enddo
 
       do k = 1, nt

@@ -15,19 +15,19 @@ C     Read single file
 
       open(unit=11,file=path,status='unknown')
 
-      do j = 1, nx
+      do i = 1, nx
             read(11,*) x
 
-         do i = 1, nq
+         do j = 1, nq
             read(11,*) q2
             
             do k = 1, nt
                 read(11,*) t,dum1,dum2
 
                 if(isim) then
-                    arr(j,i,k) = dum1
+                    arr(i,j,k) = dum2
                 else
-                    arr(j,i,k) = dum2
+                    arr(i,j,k) = dum1
                 end if
 
             enddo
