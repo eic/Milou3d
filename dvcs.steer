@@ -118,8 +118,8 @@ IDEBUG  0
 C
 C --- Number of x & q2 points in the amplitudes grid 
 C
-NXGRID 58
-NQGRID 40
+NXGRID 60 
+NQGRID 60
 NTGRID 40 
 C
 C --- Process to generate
@@ -129,7 +129,7 @@ C ipro = 3 : INT - is that correct?
 C ipro = 4 : BH+DVCS+INT
 C ipro = 5 :SSA without TW3
 C
-IPRO 2
+IPRO 4
 C
 C
 C --- ORDER : LO or NLO
