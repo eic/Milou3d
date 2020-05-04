@@ -64,8 +64,8 @@
       integer isel_interf
       common /isel_interf/ isel_interf
 
-      integer isel_realpart
-      common /isel_realpart/ isel_realpart
+c ps      integer isel_realpart
+c ps      common /isel_realpart/ isel_realpart
 
       integer isel_tintin
       common /isel_tintin/ isel_tintin,isel_f2qcd,isel_dipole
@@ -109,7 +109,7 @@ C --------------------------------------------------------
       if (stIPRO.eq.5) isel_asym   = 1 !stASYM
 
 Cls---------------------------------------new
-      isel_realpart = 1 ! 0:from Freund param ; 1:from lambda ; 2:Re=0
+c ps      isel_realpart = 1 ! 0:from Freund param ; 1:from lambda ; 2:Re=0
 Cls---------------------------------------new
 
       isel_interf = 0

@@ -37,8 +37,8 @@ cls      implicit none
       integer isel_interf
       common /isel_interf/ isel_interf
 
-      integer isel_realpart
-      common /isel_realpart/ isel_realpart
+c ps      integer isel_realpart
+c ps      common /isel_realpart/ isel_realpart
 
       integer isel_tintin
       common /isel_tintin/ isel_tintin,isel_f2qcd,isel_dipole
@@ -659,9 +659,9 @@ C
 ccc      ETA   = 0.d0
 
       dvcssq     = resa1
-      if (isel_realpart.eq.1) then
-       dvcssq     = dvcssq * (1.D0+ETA**2.)
-      endif
+c ps     if (isel_realpart.eq.1) then
+c ps      dvcssq     = dvcssq * (1.D0+ETA**2.)
+c ps     endif
 
 CLS ICI4 
 ccc      print *,eta**2
@@ -2331,8 +2331,8 @@ C
       real*8 f1p,f2p,f1n,f2n
       common /form2/ f1p,f2p,f1n,f2n
 
-      integer isel_realpart
-      common /isel_realpart/ isel_realpart
+c ps      integer isel_realpart
+c ps      common /isel_realpart/ isel_realpart
 
       external ampli
 
@@ -2381,18 +2381,18 @@ ccc      write(92,*) qsq,del,(h1re/h1im)**2
 
 CLS   HERE : real part=0
 
-      if (isel_realpart.eq.1) then
-       h1re  = 0.
-       e1re  = 0.
-       h1tre = 0.
-       e1tre = 0.
-      endif
-      if (isel_realpart.eq.2) then
-       h1re  = 0.
-       e1re  = 0.
-       h1tre = 0.
-       e1tre = 0.
-      endif
+c ps      if (isel_realpart.eq.1) then
+c ps       h1re  = 0.
+c ps       e1re  = 0.
+c ps       h1tre = 0.
+c ps       e1tre = 0.
+c ps      endif
+c ps      if (isel_realpart.eq.2) then
+c ps       h1re  = 0.
+c ps       e1re  = 0.
+c ps       h1tre = 0.
+c ps       e1tre = 0.
+c ps      endif
 
 c      e1im  = 0.
 c      e1tim = 0.
