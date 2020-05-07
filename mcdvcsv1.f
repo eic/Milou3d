@@ -4485,6 +4485,8 @@ c  input : x and q2
 c  library : cernlib (mathlib) for tchebytchev poly. routine
 c  comments, etc... to c. pascaud or f. zomer
 ***********************************************************
+
+         implicit real*8(a-h,o-z)
        real x,q2,q2min,q2max,xin,q2in
        double precision xmax,t,dchsum,coef(0:100),f(2)
        parameter(nq= 77,xmax= 0.971085)
