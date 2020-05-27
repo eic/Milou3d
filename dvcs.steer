@@ -120,7 +120,7 @@ C --- Number of x & q2 points in the amplitudes grid
 C
 NXGRID 60 
 NQGRID 60
-NTGRID 40 
+NTGRID 60 
 C
 C --- Process to generate
 C ipro = 1 : BH
