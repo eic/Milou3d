@@ -17,9 +17,9 @@ C --- Beam Energies
 C     In collider mode, enter the beam momentum
 C     In fixed target mode, ETARG = mass of target
 C
-ELEP    -15.0
+ELEP    -5.0
 c ELEP    27.6
-ETARG   50.0
+ETARG   41.0
 c ETARG   820.0
 C
 C --- Lepton charge
@@ -129,7 +129,7 @@ C ipro = 3 : INT - is that correct?
 C ipro = 4 : BH+DVCS+INT
 C ipro = 5 :SSA without TW3
 C
-IPRO 4
+IPRO 2
 C
 C
 C --- ORDER : LO or NLO
@@ -143,19 +143,20 @@ C      TMIN and TMAX are in GeV^2, negative
 C     |TMIN|  = |t|_min  
 C     |TMAX|  = |t|_max 
 C Default settings
-XMIN    1.0e-5
+c XMIN    1.0e-5
+XMIN    1.0e-3
 c XMIN    0.05
-XMAX    0.5
+XMAX    0.9
 c XMAX    1.2e-2
-QMIN    1.0
-QMAX   100.0
+QMIN    0.9
+QMAX   50.0
 c QMIN    10.
 c QMAX    15.0
 c TMIN    -0.8
 TMIN    -0.01
 c TMIN   -0.01
 c TMAX   -1.5
-TMAX   -1.0
+TMAX   -1.6
 C
 C --- Bounds on MY**2 when dissociated proton
 C
@@ -207,7 +208,7 @@ C
 C
 c YMIN   0.
 YMIN   0.01
-YMAX   0.85
+YMAX   0.95
 c YMAX   0.90
 c YMIN   ! s.fazio October 2010
 c YMIN   0.00098456

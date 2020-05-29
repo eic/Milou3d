@@ -186,7 +186,7 @@ cc      REAL IQUEST
 cc      COMMON/QUEST/IQUEST(100)
 c      IQUEST(10)=64000
       IQUEST(10)=256000
-      CALL HROPEN(LUNNT, 'toto','15x50_dvcs.ntp',
+      CALL HROPEN(LUNNT, 'toto','paw_milou.ntp',
      +            'NQE', LRECL, ISTAT)
 cc      CALL HROPEN(LUNNT, 'toto','bookhis_form_modif.ntp',
 cc     +            'N', LRECL, ISTAT)
@@ -402,7 +402,7 @@ C
       CALL BASES( FDVCS, ESTIM, SIGMA, CTIME, IT1, IT2 )
 
       lu = 66
-      open(66,file='bases_ele_ipro2_5x50.out',
+      open(66,file='bases_milou.log',
      +     status='unknown')
 
 

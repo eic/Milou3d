@@ -250,7 +250,7 @@ cm      EvtCTyp = 0                  ! event common type
       USGRun_RPA(10) = 0.
  
 C ------ Opening an output ascii file ------
-      open(LUN, FILE='./asc_15x50_dvcs.out', STATUS='unknown', err=80)
+      open(LUN, FILE='./asc_milou.out', STATUS='unknown', err=80)
            GOTO 90
  80        write(6,*) '!!!Error in PRINT_asc_head!!!'
            write(6,*) '  ---> cannot open ASCII file!'
