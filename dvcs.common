@@ -5,6 +5,8 @@
       integer stIRFRA
       integer stIGEN,stNGEN,stNCALL,stITMX1,stITMX2,stIDEBUG
       integer stNPRINT
+      character(len=20) stPATHGRID
+      integer stPATHGRIDLenght
       integer stNX,stNQ,stNT,stIPRO,stIORD,stNSET,stITFORM
       integer stIRAD
       real stELEP,stETARG,stLCHAR,stLPOL,stTPOL,stZTAR,stATAR
@@ -32,6 +34,7 @@
      +                stPHI,stPPHI,stTHETA,
      +                stIGEN,stNGEN,stNPRINT,stIRAD,
      +                stNCALL,stITMX1,stITMX2,stIDEBUG,
+     +                stPATHGRID,stPATHGRIDLenght,
      +                stNX,stNQ,stNT,stIPRO,stIORD,stNSET,stITFORM,
      +                stTWIST3,stFIXED,stTINTIN,stF2QCD,stDIPOLE,
      +                stYMIN,stYMAX,stM12MIN,stELMB,stEGMB,

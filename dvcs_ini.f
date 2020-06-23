@@ -96,11 +96,21 @@ c ps      common /isel_realpart/ isel_realpart
       character*2 temp,temp0
       character*78 temp1,temp2
 
+      integer i
+
       mfail = 0
 
 
       call readsteer
 
+C --------------------------------------------------------
+      stPATHGRIDLenght=0
+
+      do i=1,len(stPATHGRID)
+        if (stPATHGRID(i:i).eq.'/') then
+            stPATHGRIDLenght=i
+        endif
+      end do
 C --------------------------------------------------------
       if (stIPRO.eq.1) isel_asym   = 0 !stASYM
       if (stIPRO.eq.2) isel_asym   = 0 !stASYM

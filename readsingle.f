@@ -4,6 +4,8 @@ C     Read single file
 
       implicit none
 
+      include 'dvcs.common'
+
       integer nx,nq,nt
       character(len=*) path
       logical isim
@@ -13,7 +15,8 @@ C     Read single file
       real*8 x,q2,t
       real*8 dum1,dum2
 
-      open(unit=11,file=path,status='unknown')
+      open(unit=11,file=stPATHGRID(1:stPATHGRIDLenght)//path,
+     >  status='unknown')
 
       do i = 1, nx
             read(11,*) x

@@ -116,6 +116,10 @@ C --- Debug flag
 C
 IDEBUG  0
 C
+C --- Relative path to grids (must end with '/') 
+C
+PATHGRID 'tables_GK/' 
+C
 C --- Number of x & q2 points in the amplitudes grid 
 C
 NXGRID 60 

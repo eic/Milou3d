@@ -92,6 +92,9 @@ C --- Parameters for BASES
 C --- Debug flag
          CALL FFKEY('IDEBUG',stIDEBUG,1,'INTEGER')
 
+C --- Relative path to directory containing grids 
+         CALL FFKEY('PATHGRID',stPATHGRID,20,'MIXED')
+
 C --- Number of x & q2 points in the amplitudes grid
          CALL FFKEY('NXGRID',stNX,1,'INTEGER')
          CALL FFKEY('NQGRID',stNQ,1,'INTEGER')

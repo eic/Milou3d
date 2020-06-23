@@ -1129,6 +1129,8 @@ C
 
       implicit none
 
+      include 'dvcs.common'
+
       integer nord
       integer nx,nq,nt,mx,mq,mt
       parameter(mx=100,mq=100,mt=100)
@@ -1214,7 +1216,8 @@ C
 
 C     READ KINEMATIC VARIABLES
 
-      open(unit=11,file='luamp.dat',status='unknown')
+      open(unit=11,file=stPATHGRID(1:stPATHGRIDLenght)//'luamp.dat',
+     >  status='unknown')
 
       do j = 1, nx
             read(11,*) x
